@@ -5,7 +5,7 @@ Design a screen, hit **Publish**, and show it on any TV or projector. Plain HTML
 Live: https://ckopp22.github.io/BBC110/
 
 ## Status
-- Phases 1 to 3 complete (foundation, core engine, editor basics). See `BBC110_MDD.md` §14 for the roadmap.
+- Phases 1 to 4 complete (foundation, core engine, editor basics, style system). See `BBC110_MDD.md` §14 for the roadmap.
 
 ## Run locally
 Serve the folder with any static server (service workers need http://localhost or https):
@@ -19,3 +19,6 @@ Bump `CACHE_VERSION` in `sw.js` on every release so installed PWAs pick up the u
 
 ## Layout
 `renderer.js` is shared by the editor and Show mode (`show.html`), so what you see is what gets published.
+
+## Fonts
+Bundled fonts in `assets/fonts` are licensed under the SIL Open Font License (latin subset, from Fontsource).

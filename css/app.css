@@ -144,3 +144,26 @@ a { color: inherit; }
   .topbar .btn { padding: 0 12px; }
   .topbar { gap: 8px; padding: 8px 10px; }
 }
+
+/* Phase 4: themes, colors, fonts, backgrounds */
+.theme-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+.theme-chip { display: flex; align-items: center; justify-content: space-between; gap: 6px; min-height: 44px; padding: 6px 10px; border: 2px solid var(--ui-line); border-radius: 10px; font-size: 14px; font-weight: 600; text-align: left; cursor: pointer; overflow: hidden; }
+.theme-chip.custom { background: var(--ui-bg); color: var(--ui-fg); justify-content: center; }
+.theme-chip[aria-pressed="true"] { border-color: var(--ui-primary); box-shadow: 0 0 0 2px var(--ui-primary); }
+.theme-chip span:first-child { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.tc-dot { width: 14px; height: 14px; border-radius: 50%; flex: none; }
+.color-field { flex-wrap: wrap; }
+.cf { display: flex; gap: 6px; align-items: center; }
+.swatch { width: 36px; height: 36px; border-radius: 8px; border: 2px solid var(--ui-line); cursor: pointer; padding: 0; background-clip: padding-box; }
+.field .hex { width: 88px; min-height: 36px; font: 13px ui-monospace, Menlo, monospace; color: var(--ui-fg); background: var(--ui-bg); border: 1px solid var(--ui-line); border-radius: 8px; padding: 4px 8px; }
+.palette { flex-basis: 100%; padding: 10px; border: 1px solid var(--ui-line); border-radius: 10px; background: var(--ui-bg); display: flex; flex-direction: column; gap: 8px; }
+.palette[hidden] { display: none; }
+.pal-row { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+.pal-row small { width: 100%; color: var(--ui-muted); font-size: 12px; }
+.native { width: 56px; height: 36px; padding: 2px; border: 1px solid var(--ui-line); border-radius: 8px; background: none; }
+.dot { width: 28px; height: 28px; border-radius: 50%; border: 2px solid var(--ui-line); cursor: pointer; padding: 0; }
+.link { align-self: flex-start; background: none; border: 0; color: var(--ui-primary); font: 13px inherit; cursor: pointer; padding: 0; }
+.group > summary { cursor: pointer; font-weight: 700; font-size: 14px; margin-bottom: 8px; min-height: 32px; display: flex; align-items: center; }
+.field.col { flex-direction: column; align-items: stretch; }
+.btn.wide { width: 100%; margin-bottom: 8px; }
+.preset-row .btn { flex: 1 1 30%; }

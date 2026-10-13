@@ -1,5 +1,7 @@
 // Schema -> DOM. Shared by Editor and Show mode: what you see is what gets published.
 import { ASPECTS } from './model.js';
+import { themeVars, applyTheme } from './themes.js';
+import { firstFamily } from './fonts.js';
 import * as text from './elements/text.js';
 import * as shape from './elements/shape.js';
 import * as image from './elements/image.js';
@@ -12,12 +14,16 @@ function renderBackground(bg) {
   const frag = document.createDocumentFragment();
   const layer = document.createElement('div');
   layer.className = 'screen-bg';
-  if (bg && bg.value) {
-    if (bg.type === 'image') layer.style.backgroundImage = `url("${bg.value}")`;
-    else layer.style.background = bg.value; // color or gradient
+  if (bg && bg.type === 'image' && bg.value) {
+    layer.style.backgroundImage = `url("${bg.value}")`;
+    layer.style.backgroundSize = bg.fit === 'contain' ? 'contain' : 'cover';
+    layer.style.backgroundRepeat = 'no-repeat';
+    if (bg.blur > 0) { layer.style.filter = `blur(${bg.blur}px)`; layer.style.transform = 'scale(1.1)'; }
+  } else if (bg && bg.value) {
+    layer.style.background = bg.value; // color or gradient
   }
   frag.append(layer);
-  if (bg && bg.overlay) {
+  if (bg && bg.overlay && bg.overlay.opacity > 0) {
     const o = document.createElement('div');
     o.className = 'screen-overlay';
     o.style.background = bg.overlay.color;
@@ -42,9 +48,10 @@ export function renderElement(el) {
   return node;
 }
 
-export function renderScreen(screen) {
+export function renderScreen(screen, deck) {
   const node = document.createElement('div');
   node.className = 'screen';
+  if (screen.theme) applyTheme(node, themeVars(screen.theme, deck));
   node.dataset.id = screen.id;
   node.append(renderBackground(screen.background));
   [...screen.elements]
@@ -62,7 +69,7 @@ export function createStage(host, initialDeck, { fit = 'contain' } = {}) {
   const metrics = { s: 1, ox: 0, oy: 0, W: 1920, H: 1080 };
   host.classList.add('stage-host');
   const stage = document.createElement('div');
-  stage.className = `stage theme-${deck.theme}`;
+  stage.className = 'stage';
   host.append(stage);
 
   let current = null;
@@ -82,7 +89,7 @@ export function createStage(host, initialDeck, { fit = 'contain' } = {}) {
     [W, H] = canvasSize(deck.aspect);
     stage.style.width = W + 'px';
     stage.style.height = H + 'px';
-    stage.className = `stage theme-${deck.theme}`;
+    applyTheme(stage, themeVars(deck.theme, deck));
     layout();
   }
 
@@ -95,7 +102,7 @@ export function createStage(host, initialDeck, { fit = 'contain' } = {}) {
     const screen = deck.screens[i];
     if (!screen) return;
     index = i;
-    const next = renderScreen(screen);
+    const next = renderScreen(screen, deck);
     const prev = current;
     current = next;
     if (prev && transitionMs > 0) {
@@ -111,7 +118,7 @@ export function createStage(host, initialDeck, { fit = 'contain' } = {}) {
     stage,
     metrics,
     set onLayout(fn) { onLayout = fn; },
-    setDeck(d) { deck = d; },
+    setDeck(d) { deck = d; size(); },
     get index() { return index; },
     setScreen,
     rerender() { size(); if (index >= 0) setScreen(index); },
@@ -119,17 +126,34 @@ export function createStage(host, initialDeck, { fit = 'contain' } = {}) {
   };
 }
 
-// Resolves once every image in the deck is decoded (or a timeout passes), so the first frame has no pop-in.
+// Resolves once every image and font in the deck is ready (or a timeout passes), so the first frame has no pop-in.
 export function preloadDeck(deck, timeoutMs = 4000) {
   const srcs = new Set();
+  const fonts = new Set();
+  const addTheme = (id) => {
+    const v = themeVars(id, deck);
+    for (const k of ['--font-display', '--font-body']) for (const w of [400, 700]) fonts.add(`${w}|${firstFamily(v[k])}`);
+  };
+  addTheme(deck.theme);
   for (const s of deck.screens) {
+    if (s.theme) addTheme(s.theme);
     if (s.background && s.background.type === 'image' && s.background.value) srcs.add(s.background.value);
-    for (const el of s.elements) if (el.type === 'image' && el.content && el.content.src) srcs.add(el.content.src);
+    for (const el of s.elements) {
+      if (el.type === 'image' && el.content && el.content.src) srcs.add(el.content.src);
+      const fam = el.style && firstFamily(el.style.fontFamily);
+      if (fam) fonts.add(`${el.style.fontWeight || 400}|${fam}`);
+    }
   }
   const jobs = [...srcs].map((src) => {
     const img = new Image();
     img.src = src;
     return img.decode ? img.decode().catch(() => {}) : Promise.resolve();
   });
+  if (document.fonts && document.fonts.load) {
+    for (const f of fonts) {
+      const [w, fam] = f.split('|');
+      if (fam) jobs.push(document.fonts.load(`${w} 1em "${fam}"`).catch(() => {}));
+    }
+  }
   return Promise.race([Promise.all(jobs), new Promise((r) => setTimeout(r, timeoutMs))]);
 }

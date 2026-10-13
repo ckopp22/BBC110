@@ -89,8 +89,8 @@ export function sampleDeck() {
 export function defaultElement(kind, extra = {}) {
   const presets = {
     text: { type: 'text', w: 900, h: 220, content: { text: 'New text' }, style: { fontSize: 110, fontWeight: 700 } },
-    rect: { type: 'shape', w: 500, h: 320, style: { fill: '#2563eb', radius: 24 } },
-    circle: { type: 'shape', w: 360, h: 360, style: { fill: '#2563eb', shape: 'circle' } },
+    rect: { type: 'shape', w: 500, h: 320, style: { fill: 'var(--accent)', radius: 24 } },
+    circle: { type: 'shape', w: 360, h: 360, style: { fill: 'var(--accent)', shape: 'circle' } },
     image: { type: 'image', w: 800, h: 450, content: { src: '', alt: '' }, style: { fit: 'cover', radius: 0 } },
   };
   const { type, ...p } = presets[kind];
