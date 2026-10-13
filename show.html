@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>BBC110 Show</title>
+  <meta name="theme-color" content="#000000">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="assets/icons/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="css/themes.css">
+  <link rel="stylesheet" href="css/canvas.css">
+  <link rel="stylesheet" href="css/animations.css">
+  <style>
+    html,body{margin:0;height:100%;background:#000;overflow:hidden;user-select:none;-webkit-user-select:none;-webkit-touch-callout:none;touch-action:manipulation}
+    #host{position:fixed;inset:0;overflow:hidden}
+    body.idle,body.idle *{cursor:none}
+    #blank{position:fixed;inset:0;background:#000;display:none}
+    body.blank #blank{display:block}
+    #msg{position:fixed;inset:0;display:none;align-items:center;justify-content:center;flex-direction:column;gap:16px;color:#e2e8f0;font:600 20px system-ui,sans-serif;text-align:center;padding:24px}
+    #msg a{color:#facc15}
+    #hint{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:rgba(15,23,42,.85);color:#e2e8f0;font:500 14px system-ui,sans-serif;padding:8px 14px;border-radius:999px;opacity:0;transition:opacity .4s;pointer-events:none}
+    #hint.on{opacity:1}
+    #ctl{position:fixed;left:50%;bottom:20px;transform:translateX(-50%);display:flex;gap:8px;align-items:center;padding:8px;border-radius:16px;background:rgba(15,23,42,.88);backdrop-filter:blur(8px);opacity:0;pointer-events:none;transition:opacity .25s;max-width:calc(100vw - 24px);flex-wrap:wrap;justify-content:center}
+    body.ctl #ctl{opacity:1;pointer-events:auto}
+    body.ctl #hint{opacity:0}
+    #ctl button,#ctl select{font:600 15px system-ui,sans-serif;color:#f8fafc;background:#334155;border:0;border-radius:10px;min-width:44px;height:44px;padding:0 12px;cursor:pointer}
+    #ctl button:hover,#ctl button:focus-visible{background:#475569;outline:2px solid #facc15;outline-offset:1px}
+    #ctl select{max-width:180px}
+    #ctl .on{background:#facc15;color:#0f172a}
+    #count{color:#cbd5e1;font:600 14px system-ui,sans-serif;min-width:48px;text-align:center}
+  </style>
+</head>
+<body>
+  <div id="host"></div>
+  <div id="blank"></div>
+  <div id="msg"></div>
+  <div id="hint">Tap or press F for fullscreen</div>
+  <div id="ctl" role="toolbar" aria-label="Show controls">
+    <button id="bPrev" aria-label="Previous screen">&#9664;</button>
+    <button id="bPlay" aria-label="Pause or play">&#10074;&#10074;</button>
+    <button id="bNext" aria-label="Next screen">&#9654;</button>
+    <span id="count">1 / 1</span>
+    <select id="jump" aria-label="Jump to screen"></select>
+    <button id="bBlack" aria-label="Black screen">Black</button>
+    <button id="bFull" aria-label="Fullscreen">Full</button>
+    <button id="bExit" aria-label="Exit show">Exit</button>
+  </div>
+  <script type="module" src="js/show/show.js"></script>
+</body>
+</html>

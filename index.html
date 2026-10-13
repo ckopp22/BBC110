@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>BBC110</title>
+  <meta name="description" content="Design a screen, hit Publish, and show it on any TV or projector.">
+  <meta name="theme-color" content="#0f172a">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="assets/icons/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="assets/icons/apple-touch-icon.png">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="BBC110">
+  <link rel="stylesheet" href="css/themes.css">
+  <link rel="stylesheet" href="css/canvas.css">
+  <link rel="stylesheet" href="css/animations.css">
+  <link rel="stylesheet" href="css/app.css">
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="#/" aria-label="BBC110 home"><img src="assets/icons/favicon.svg" alt="" width="28" height="28"><span>BBC110</span></a>
+    <div id="topbarActions" class="topbar-actions"></div>
+    <button id="installBtn" class="btn" hidden>Install app</button>
+  </header>
+
+  <main id="app"></main>
+
+  <div id="updateBar" class="update-bar" role="status" hidden>
+    <span>New version available</span>
+    <button id="updateBtn" class="btn btn-primary">Refresh</button>
+  </div>
+
+  <dialog id="iosHelp" class="dialog">
+    <h2>Install on iPhone / iPad</h2>
+    <p>Tap the <strong>Share</strong> button in Safari, then choose <strong>Add to Home Screen</strong>.</p>
+    <form method="dialog"><button class="btn btn-primary">Got it</button></form>
+  </dialog>
+
+  <noscript>BBC110 needs JavaScript to run.</noscript>
+  <script type="module" src="js/main.js"></script>
+</body>
+</html>

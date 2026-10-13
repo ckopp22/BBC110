@@ -1,0 +1,86 @@
+// Data model: schema factories (see MDD §5.3). No DOM, no storage.
+export const SCHEMA_VERSION = 1;
+
+export const ASPECTS = {
+  '16:9': [1920, 1080],
+  '16:10': [1920, 1200],
+  '4:3': [1920, 1440],
+  '9:16': [1080, 1920],
+  '1:1': [1080, 1080],
+};
+
+export const uid = () =>
+  (globalThis.crypto && crypto.randomUUID)
+    ? crypto.randomUUID()
+    : 'id-' + Date.now().toString(36) + Math.random().toString(36).slice(2, 10);
+
+export function newElement(type, props = {}) {
+  return {
+    id: uid(), type,
+    x: 0, y: 0, w: 400, h: 200, rotation: 0, z: 1,
+    hidden: false, locked: false,
+    style: {}, content: {},
+    animation: { in: 'none', loop: 'none', out: 'none', delayMs: 0, durationMs: 600 },
+    ...props,
+  };
+}
+
+export function newScreen(name = 'Screen', props = {}) {
+  return {
+    id: uid(), name, durationSec: 10,
+    background: { type: 'color', value: '', overlay: null },
+    elements: [],
+    ...props,
+  };
+}
+
+export function newDeck(name = 'Untitled', screens = [newScreen('Screen 1')]) {
+  const now = Date.now();
+  return {
+    id: uid(), name, schemaVersion: SCHEMA_VERSION,
+    aspect: '16:9', theme: 'midnight',
+    mode: 'manual', defaultDurationSec: 10,
+    transition: { type: 'fade', durationMs: 600 },
+    screens, createdAt: now, updatedAt: now,
+  };
+}
+
+export function sampleDeck() {
+  const welcome = newScreen('Welcome', {
+    durationSec: 12,
+    background: { type: 'gradient', value: 'linear-gradient(135deg,#0b1020 0%,#1e3a8a 100%)', overlay: null },
+    elements: [
+      newElement('shape', { x: 160, y: 420, w: 220, h: 10, style: { fill: 'var(--accent)', radius: 5 } }),
+      newElement('text', {
+        x: 160, y: 200, w: 1600, h: 200, z: 2,
+        content: { text: 'Welcome to Youth Night' },
+        style: { fontSize: 140, fontWeight: 800, valign: 'bottom' },
+      }),
+      newElement('text', {
+        x: 160, y: 470, w: 1400, h: 260, z: 2,
+        content: { text: 'Wednesdays at 6:30 PM\nGrab a snack and find a seat!' },
+        style: { fontSize: 64, fontWeight: 500, color: 'var(--muted)', lineHeight: 1.3 },
+      }),
+    ],
+  });
+  const news = newScreen('Announcements', {
+    durationSec: 12,
+    background: { type: 'color', value: '#111827', overlay: null },
+    elements: [
+      newElement('text', {
+        x: 160, y: 120, w: 1600, h: 140, z: 2,
+        content: { text: 'This Week' },
+        style: { fontSize: 110, fontWeight: 800, color: 'var(--accent)' },
+      }),
+      newElement('shape', { x: 160, y: 300, w: 1600, h: 560, style: { fill: 'rgba(255,255,255,.07)', radius: 32 } }),
+      newElement('text', {
+        x: 220, y: 340, w: 1480, h: 480, z: 3,
+        content: { text: '• Game night this Friday\n• Bring a friend, win a prize\n• Retreat sign-ups close Sunday' },
+        style: { fontSize: 72, fontWeight: 600, lineHeight: 1.5 },
+      }),
+    ],
+  });
+  const deck = newDeck('Sample: Youth Night', [welcome, news]);
+  deck.mode = 'loop';
+  return deck;
+}

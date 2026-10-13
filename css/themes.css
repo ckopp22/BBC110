@@ -1,0 +1,4 @@
+/* Output themes (independent of the editor UI). Applied as a class on .stage. */
+.theme-midnight { --bg:#0b1020; --fg:#f8fafc; --accent:#facc15; --muted:#94a3b8; --font-display:"Trebuchet MS","Segoe UI",system-ui,sans-serif; --font-body:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif; }
+.theme-sunrise  { --bg:#7c2d12; --fg:#fff7ed; --accent:#fdba74; --muted:#fed7aa; --font-display:Georgia,"Times New Roman",serif; --font-body:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif; }
+.theme-clean    { --bg:#ffffff; --fg:#0f172a; --accent:#2563eb; --muted:#64748b; --font-display:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif; --font-body:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif; }
