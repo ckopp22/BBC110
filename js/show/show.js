@@ -4,10 +4,13 @@ import { createStage, preloadDeck } from '../renderer.js';
 import { sampleDeck } from '../model.js';
 import { getControllers } from '../live.js';
 import { exitMs, initMotion } from '../animator.js';
+import { localTransport, receiverTransport } from '../sync.js';
 
 const $ = (id) => document.getElementById(id);
 const body = document.body;
-const id = new URLSearchParams(location.search).get('id');
+const params = new URLSearchParams(location.search);
+const id = params.get('id');
+const presentMode = params.get('present') === '1'; // opened from the Editor's Publish dialog: wire remote control
 const homeUrl = id && id !== 'demo' ? `index.html#/edit/${encodeURIComponent(id)}` : 'index.html';
 
 function fail(message) {
@@ -22,14 +25,26 @@ async function loadDeck() {
 }
 
 async function start() {
-  const deck = await loadDeck();
+  let deck, castTransport = null;
+  if (!id) {
+    // No id: either a cast receiver (launched by a device via the Presentation API) or a stray open.
+    const t = await receiverTransport();
+    if (!t) return fail('Open BBC110 and tap Publish to show a screen here.');
+    deck = await new Promise((resolve) => {
+      t.onMessage((msg) => { if (msg.t === 'deck') resolve(msg.deck); });
+      t.send({ t: 'hello' });
+    });
+    castTransport = t;
+  } else {
+    deck = await loadDeck();
+  }
   if (!deck || !deck.screens || !deck.screens.length) return fail('This screen could not be found.');
 
   initMotion();
   document.title = `${deck.name} – BBC110 Show`;
   await preloadDeck(deck);
   const stage = createStage($('host'), deck, { mode: 'show' });
-  const count = deck.screens.length;
+  let count = deck.screens.length;
   const resumeKey = `bbc110.resume.${deck.id}`;
   const mode = deck.mode || 'manual';
 
@@ -44,7 +59,34 @@ async function start() {
   try { const saved = parseInt(localStorage.getItem(resumeKey), 10); if (saved >= 0 && saved < count) index = saved; } catch { /* storage blocked */ }
 
   const jump = $('jump');
-  deck.screens.forEach((s, i) => jump.add(new Option(`${i + 1}. ${s.name}`, i)));
+  const rebuildJump = () => { jump.replaceChildren(); deck.screens.forEach((s, i) => jump.add(new Option(`${i + 1}. ${s.name}`, i))); };
+  rebuildJump();
+
+  // Remote control: a local window (opened via Publish) or a real cast connection (castTransport, set above).
+  const transport = castTransport || (presentMode && id ? localTransport(id) : null);
+  function sendState() {
+    if (!transport) return;
+    const timers = getControllers('timer'), scores = getControllers('score');
+    transport.send({
+      t: 'state', index, count, name: deck.screens[index].name, mode, paused,
+      blanked: body.classList.contains('blank'), hasTimer: !!timers.length, timerRunning: timers.some((x) => x.running), hasScore: !!scores.length,
+    });
+  }
+  if (transport) {
+    transport.onMessage((msg) => {
+      if (msg.t === 'hello') { transport.send({ t: 'hello' }); sendState(); }
+      else if (msg.t === 'deck') { Object.assign(deck, msg.deck); count = deck.screens.length; rebuildJump(); stage.setDeck(deck); index = Math.min(index, count - 1); stage.setScreen(index); sendState(); }
+      else if (msg.t === 'goto') go(msg.index);
+      else if (msg.t === 'pause') setPaused(true);
+      else if (msg.t === 'play') setPaused(false);
+      else if (msg.t === 'black') { body.classList.toggle('blank', msg.on); $('bBlack').classList.toggle('on', msg.on); sendState(); }
+      else if (msg.t === 'timerToggle') toggleTimers();
+      else if (msg.t === 'timerReset') resetLive();
+      else if (msg.t === 'close') (castTransport ? () => { fail('The presentation ended.'); } : exit)();
+    });
+    transport.send({ t: 'hello' });
+    addEventListener('pagehide', () => transport.send({ t: 'bye' }));
+  }
 
   function durationMs(i) { return (deck.screens[i].durationSec || deck.defaultDurationSec || 10) * 1000; }
 
@@ -90,7 +132,8 @@ async function start() {
     schedule(Math.max(0, durationMs(index) - exitMs(sc)));
     refreshLive();
     // The old screen's timers are torn down after the transition, so re-check which controls apply.
-    if (changed && ms) setTimeout(refreshLive, ms + 200);
+    if (changed && ms) setTimeout(() => { refreshLive(); sendState(); }, ms + 200);
+    sendState();
   }
 
   // Timer and scoreboard controls only appear when the current screen has them.
@@ -100,8 +143,8 @@ async function start() {
     $('bReset').hidden = !(timers.length || scores.length);
     $('bTimer').textContent = timers.some((t) => t.running) ? 'Pause' : 'Start';
   }
-  const toggleTimers = () => { getControllers('timer').forEach((t) => t.toggle()); refreshLive(); };
-  const resetLive = () => { getControllers('timer').forEach((t) => t.reset()); getControllers('score').forEach((c) => c.reset()); refreshLive(); };
+  const toggleTimers = () => { getControllers('timer').forEach((t) => t.toggle()); refreshLive(); sendState(); };
+  const resetLive = () => { getControllers('timer').forEach((t) => t.reset()); getControllers('score').forEach((c) => c.reset()); refreshLive(); sendState(); };
 
   function setPaused(p) {
     if (mode === 'manual') return;
@@ -110,6 +153,7 @@ async function start() {
     else { paused = false; schedule(remaining || durationMs(index)); }
     $('bPlay').innerHTML = paused ? '&#9654;' : '&#10074;&#10074;';
     $('bPlay').classList.toggle('on', paused);
+    sendState();
   }
 
   // Wake lock: keep the display awake; re-acquire when the tab becomes visible again.
@@ -155,7 +199,7 @@ async function start() {
   $('bPrev').onclick = () => go(index - 1);
   $('bNext').onclick = () => go(index + 1);
   $('bPlay').onclick = () => setPaused(!paused);
-  $('bBlack').onclick = () => { body.classList.toggle('blank'); $('bBlack').classList.toggle('on', body.classList.contains('blank')); };
+  $('bBlack').onclick = () => { body.classList.toggle('blank'); $('bBlack').classList.toggle('on', body.classList.contains('blank')); sendState(); };
   $('bTimer').onclick = toggleTimers;
   $('bReset').onclick = resetLive;
   $('bFull').onclick = toggleFull;

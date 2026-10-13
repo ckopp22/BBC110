@@ -5,6 +5,8 @@ import { createCanvasEditor } from './canvas.js';
 import { createInspector } from './inspector.js';
 import { createPanels } from './panels.js';
 import { entranceEndMs, reduceMotion } from '../animator.js';
+import { openPublishDialog } from './publish.js';
+import { createPresentBar } from './presentbar.js';
 
 let cleanup = null;
 const mobile = matchMedia('(max-width: 900px)');
@@ -33,12 +35,13 @@ export async function renderEditor(root, actions, id) {
   undoBtn.setAttribute('aria-label', 'Undo');
   redoBtn.setAttribute('aria-label', 'Redo');
   const status = mk('span', { className: 'status', textContent: 'Saved' });
-  const publish = mk('a', { className: 'btn btn-primary', textContent: 'Publish', href: `show.html?id=${encodeURIComponent(deck.id)}` });
-  publish.onclick = () => { store.flush(); };
+  const publish = mk('button', { className: 'btn btn-primary', textContent: 'Publish', type: 'button' });
+  publish.onclick = () => openPublishDialog(store.getState().deck, { onPresenting: refreshPresentBar });
   actions.append(back, name, undoBtn, redoBtn, status, publish);
 
   // ---- layout ----
   root.innerHTML = `
+    <div id="presentBar"></div>
     <div class="editor" data-tab="edit">
       <aside class="panel left">
         <section data-tab="add"><h2>Add</h2><div id="addRoot"></div></section>
@@ -76,6 +79,10 @@ export async function renderEditor(root, actions, id) {
   }
   root.querySelectorAll('.tabs button').forEach((b) => { b.onclick = () => setTab(b.dataset.go); });
   setTab('edit');
+
+  // ---- presenting bar: shown while this deck is live in a second window or cast target ----
+  let presentBar = createPresentBar($('#presentBar'), deck.id);
+  function refreshPresentBar() { presentBar.destroy(); presentBar = createPresentBar($('#presentBar'), deck.id); }
 
   // ---- animation preview: transition in, entrances/loops, hold, exit, then back to editing ----
   let previewing = false, previewTimers = [], previewAt = null;
@@ -179,6 +186,7 @@ export async function renderEditor(root, actions, id) {
     cancelAnimationFrame(raf);
     previewTimers.forEach(clearTimeout);
     document.removeEventListener('keydown', onKey);
+    presentBar.destroy();
     panels.destroy();
     canvas.destroy();
     stage.destroy();
