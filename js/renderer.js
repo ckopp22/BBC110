@@ -5,8 +5,15 @@ import { firstFamily } from './fonts.js';
 import * as text from './elements/text.js';
 import * as shape from './elements/shape.js';
 import * as image from './elements/image.js';
+import * as clock from './elements/clock.js';
+import * as timer from './elements/timer.js';
+import * as banner from './elements/banner.js';
+import * as ticker from './elements/ticker.js';
+import * as qr from './elements/qr.js';
+import * as scoreboard from './elements/scoreboard.js';
+import { subscribe, addController } from './live.js';
 
-const ELEMENTS = { text, shape, image };
+const ELEMENTS = { text, shape, image, clock, timer, banner, ticker, qr, scoreboard };
 
 export const canvasSize = (aspect) => ASPECTS[aspect] || ASPECTS['16:9'];
 
@@ -33,7 +40,8 @@ function renderBackground(bg) {
   return frag;
 }
 
-export function renderElement(el) {
+// ctx: { mode, live, persist, deckId, cleanups }. Live elements return { update, start, stop, controller }.
+export function renderElement(el, ctx = { live: false, cleanups: [] }) {
   const mod = ELEMENTS[el.type];
   const node = document.createElement('div');
   node.className = `el el-${el.type}`;
@@ -44,26 +52,42 @@ export function renderElement(el) {
   node.style.height = el.h + 'px';
   node.style.zIndex = el.z;
   if (el.rotation) node.style.transform = `rotate(${el.rotation}deg)`;
-  if (mod) mod.render(el, node);
+  const r = mod && mod.render(el, node, ctx);
+  if (r) {
+    if (r.update) r.update(Date.now());
+    if (ctx.live) {
+      if (r.update) ctx.cleanups.push(subscribe(r.update));
+      if (r.start) r.start();
+      if (r.stop) ctx.cleanups.push(r.stop);
+      if (r.controller) ctx.cleanups.push(addController(r.controller));
+    }
+  }
   return node;
 }
 
-export function renderScreen(screen, deck) {
+export function renderScreen(screen, deck, base = { live: false }) {
   const node = document.createElement('div');
   node.className = 'screen';
   if (screen.theme) applyTheme(node, themeVars(screen.theme, deck));
   node.dataset.id = screen.id;
   node.append(renderBackground(screen.background));
+  const cleanups = [];
+  const ctx = { ...base, deckId: deck && deck.id, persist: base.mode === 'show', cleanups };
   [...screen.elements]
     .filter((el) => !el.hidden)
     .sort((a, b) => a.z - b.z)
-    .forEach((el) => node.append(renderElement(el)));
+    .forEach((el) => node.append(renderElement(el, ctx)));
+  node._cleanup = () => cleanups.splice(0).forEach((fn) => fn());
   return node;
 }
 
+// Stops timers/tickers of a screen that is no longer displayed.
+export function destroyScreen(node) { if (node && node._cleanup) node._cleanup(); }
+
 // Mounts a scaled logical canvas inside `host` and keeps it fitted as the host resizes.
 // fit: 'contain' (letterbox/pillarbox) or 'cover' (fill/crop).
-export function createStage(host, initialDeck, { fit = 'contain' } = {}) {
+// mode: 'edit' | 'show' (show persists timers and scores). live: false renders a static snapshot (thumbnails).
+export function createStage(host, initialDeck, { fit = 'contain', mode = 'edit', live = true } = {}) {
   let deck = initialDeck;
   let onLayout = null;
   const metrics = { s: 1, ox: 0, oy: 0, W: 1920, H: 1080 };
@@ -102,15 +126,16 @@ export function createStage(host, initialDeck, { fit = 'contain' } = {}) {
     const screen = deck.screens[i];
     if (!screen) return;
     index = i;
-    const next = renderScreen(screen, deck);
+    const next = renderScreen(screen, deck, { mode, live });
     const prev = current;
     current = next;
     if (prev && transitionMs > 0) {
       next.style.animation = `bbc-fade-in ${transitionMs}ms ease both`;
       stage.append(next);
-      setTimeout(() => prev.remove(), transitionMs + 50);
+      setTimeout(() => { prev.remove(); destroyScreen(prev); }, transitionMs + 50);
     } else {
       stage.replaceChildren(next);
+      destroyScreen(prev);
     }
   }
 
@@ -122,7 +147,7 @@ export function createStage(host, initialDeck, { fit = 'contain' } = {}) {
     get index() { return index; },
     setScreen,
     rerender() { size(); if (index >= 0) setScreen(index); },
-    destroy() { ro.disconnect(); stage.remove(); },
+    destroy() { ro.disconnect(); destroyScreen(current); stage.remove(); },
   };
 }
 

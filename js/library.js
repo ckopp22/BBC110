@@ -69,7 +69,7 @@ function card(deck) {
   body.append(name, meta, row);
   el.append(body);
 
-  const stage = createStage(thumb, deck);
+  const stage = createStage(thumb, deck, { live: false });
   stage.setScreen(0);
   return el;
 }

@@ -4,6 +4,7 @@ import { pickImage } from './images.js';
 import { colorField } from './colorpicker.js';
 import { THEMES, resolveTheme } from '../themes.js';
 import { FONT_GROUPS, fontStack } from '../fonts.js';
+import { ASPECTS } from '../model.js';
 
 const h = (tag, props = {}, ...kids) => {
   const n = Object.assign(document.createElement(tag), props);
@@ -25,6 +26,10 @@ const PRESETS = {
   Solid: { fill: 'var(--accent)', radius: 28, borderWidth: 0, shadow: 0, blur: 0, opacity: 1 },
   Shadowed: { fill: '#ffffff', radius: 28, borderWidth: 0, shadow: 60, blur: 0, opacity: 1 },
 };
+
+const TIME_ZONES = [['', 'Device time zone'], ['UTC', 'UTC'], ['America/New_York', 'Eastern'], ['America/Chicago', 'Central'], ['America/Denver', 'Mountain'], ['America/Phoenix', 'Arizona'], ['America/Los_Angeles', 'Pacific'], ['America/Anchorage', 'Alaska'], ['Pacific/Honolulu', 'Hawaii'], ['Europe/London', 'London'], ['Europe/Paris', 'Paris'], ['Asia/Tokyo', 'Tokyo'], ['Australia/Sydney', 'Sydney']];
+const WEIGHTS = [[400, 'Regular'], [500, 'Medium'], [600, 'Semibold'], [700, 'Bold'], [800, 'Extra bold']];
+const LAYER_NAMES = { clock: 'Clock', timer: 'Timer', ticker: 'Ticker', qr: 'QR code', scoreboard: 'Scoreboard' };
 
 export function createInspector(root, layersRoot) {
   let controls = [];
@@ -179,15 +184,11 @@ export function createInspector(root, layersRoot) {
     const eff = (k) => ({ ...EFFECT_DEFAULTS[k], ...(g().style[k] || {}) });
     const setEff = (k, p) => upd({ style: { [k]: { ...eff(k), ...p } } }, k + Object.keys(p)[0]);
 
-    if (el.type === 'text') {
-      const t = group('Text');
-      textArea = h('textarea', { rows: 3 });
-      textArea.oninput = () => upd({ content: { text: textArea.value } }, 'text');
-      row(t, 'Text', textArea, (n) => { n.value = g().content.text || ''; });
-      fontSelect(t, 'Font', () => g().style.fontFamily || 'var(--font-display)', sty('fontFamily'), { theme: true });
-      num(t, 'Size', () => g().style.fontSize || 64, sty('fontSize'), { min: 8, max: 600 });
-      select(t, 'Weight', [[400, 'Regular'], [500, 'Medium'], [600, 'Semibold'], [700, 'Bold'], [800, 'Extra bold']], () => g().style.fontWeight || 400, (v) => upd({ style: { fontWeight: +v } }, 'weight'));
-      color(t, 'Color', () => g().style.color, sty('color'), '#ffffff');
+    const c = () => g().content;
+    const setC = (k, key) => (v) => upd({ content: { [k]: v } }, key || k);
+    const lines = (v) => v.split('\n');
+
+    const alignSeg = (t) => {
       const al = h('div', { className: 'seg' });
       [['left', 'Left'], ['center', 'Center'], ['right', 'Right']].forEach(([v, label]) => {
         const b = h('button', { type: 'button', textContent: label });
@@ -196,12 +197,23 @@ export function createInspector(root, layersRoot) {
         controls.push(() => b.setAttribute('aria-pressed', String((g().style.align || 'left') === v)));
       });
       t.append(h('div', { className: 'field' }, h('span', { textContent: 'Align' }), al));
-      select(t, 'Vertical', [['top', 'Top'], ['middle', 'Middle'], ['bottom', 'Bottom']], () => g().style.valign || 'top', sty('valign'));
-      num(t, 'Line height', () => g().style.lineHeight || 1.15, sty('lineHeight'), { min: 0.5, max: 3, step: 0.05 });
-      num(t, 'Letter space', () => g().style.letterSpacing || 0, sty('letterSpacing'), { min: -20, max: 100 });
-      select(t, 'Case', [['', 'Normal'], ['uppercase', 'UPPER'], ['lowercase', 'lower'], ['capitalize', 'Title']], () => g().style.textTransform || '', sty('textTransform'));
-      check(t, 'Italic', () => g().style.italic, sty('italic'));
-
+    };
+    // o.full adds line height, letter spacing, case and italic; o.noVertical hides vertical alignment.
+    const fontControls = (t, o = {}) => {
+      fontSelect(t, 'Font', () => g().style.fontFamily || 'var(--font-display)', sty('fontFamily'), { theme: true });
+      num(t, 'Size', () => g().style.fontSize || o.size || 64, sty('fontSize'), { min: 8, max: 600 });
+      select(t, 'Weight', WEIGHTS, () => g().style.fontWeight || o.weight || 400, (v) => upd({ style: { fontWeight: +v } }, 'weight'));
+      color(t, 'Color', () => g().style.color, sty('color'), '#ffffff');
+      alignSeg(t);
+      if (!o.noVertical) select(t, 'Vertical', [['top', 'Top'], ['middle', 'Middle'], ['bottom', 'Bottom']], () => g().style.valign || 'top', sty('valign'));
+      if (o.full) {
+        num(t, 'Line height', () => g().style.lineHeight || 1.15, sty('lineHeight'), { min: 0.5, max: 3, step: 0.05 });
+        num(t, 'Letter space', () => g().style.letterSpacing || 0, sty('letterSpacing'), { min: -20, max: 100 });
+        select(t, 'Case', [['', 'Normal'], ['uppercase', 'UPPER'], ['lowercase', 'lower'], ['capitalize', 'Title']], () => g().style.textTransform || '', sty('textTransform'));
+        check(t, 'Italic', () => g().style.italic, sty('italic'));
+      }
+    };
+    const effectControls = () => {
       const e = group('Text effects', { details: true });
       num(e, 'Shadow', () => eff('shadow').blur, (v) => setEff('shadow', { blur: Math.max(0, v) }), { min: 0, max: 100 });
       color(e, 'Shadow color', () => eff('shadow').color, (v) => setEff('shadow', { color: v }), '#000000');
@@ -214,8 +226,110 @@ export function createInspector(root, layersRoot) {
       color(e, 'Gradient 1', () => gr().c1, (v) => upd({ style: { gradient: { ...gr(), c1: v } } }, 'gc1'), '#ffffff');
       color(e, 'Gradient 2', () => gr().c2, (v) => upd({ style: { gradient: { ...gr(), c2: v } } }, 'gc2'), '#facc15');
       num(e, 'Gradient angle', () => gr().angle, (v) => upd({ style: { gradient: { ...gr(), angle: Math.round(v) } } }, 'ga'), { min: 0, max: 360 });
-      check(e, 'Highlight', () => g().style.highlight, (on) => upd({ style: { highlight: on ? { color: 'var(--accent)' } : null } }));
-      color(e, 'Highlight color', () => (g().style.highlight || {}).color, (v) => upd({ style: { highlight: { color: v } } }, 'hl'), '#facc15');
+      if (g().type === 'text') {
+        check(e, 'Highlight', () => g().style.highlight, (on) => upd({ style: { highlight: on ? { color: 'var(--accent)' } : null } }));
+        color(e, 'Highlight color', () => (g().style.highlight || {}).color, (v) => upd({ style: { highlight: { color: v } } }, 'hl'), '#facc15');
+      }
+    };
+    // Banner and ticker bars: placement, look, and text style.
+    const barControls = (t) => {
+      const [W, H] = ASPECTS[deck().aspect] || ASPECTS['16:9'];
+      const place = h('div', { className: 'btn-row' });
+      const put = (patch, radius) => store.updateElement(id, { ...patch, style: { radius } });
+      button(place, 'Top', () => put({ x: 0, y: 0, w: W }, 0));
+      button(place, 'Bottom', () => put({ x: 0, y: H - g().h, w: W }, 0));
+      button(place, 'Floating', () => put({ x: 60, y: H - g().h - 60, w: W - 120 }, Math.round(g().h / 2)));
+      t.append(h('div', { className: 'field col' }, h('span', { textContent: 'Placement' }), place));
+      select(t, 'Look', [['solid', 'Solid'], ['gradient', 'Gradient'], ['glass', 'Glass'], ['alert', 'Alert']], () => g().style.variant || 'solid', sty('variant'));
+      const v = g().style.variant || 'solid';
+      if (v === 'alert') select(t, 'Alert style', [['pulse', 'Pulse'], ['flash', 'Flash'], ['none', 'Steady']], () => g().style.alert || 'pulse', sty('alert'));
+      if (v === 'solid' || v === 'gradient' || v === 'alert') color(t, 'Background', () => g().style.bg, sty('bg'), v === 'alert' ? '#dc2626' : '#facc15');
+      if (v === 'gradient') color(t, 'Gradient end', () => g().style.bg2, sty('bg2'), '#94a3b8');
+      num(t, 'Corner radius', () => g().style.radius || 0, sty('radius'), { min: 0, max: 400 });
+      fontControls(t, { noVertical: true, size: 56, weight: 700 });
+    };
+
+    if (el.type === 'text') {
+      const t = group('Text');
+      textArea = h('textarea', { rows: 3 });
+      textArea.oninput = () => upd({ content: { text: textArea.value } }, 'text');
+      row(t, 'Text', textArea, (n) => { n.value = g().content.text || ''; });
+      fontControls(t, { full: true });
+      effectControls();
+    } else if (el.type === 'clock') {
+      const t = group('Clock');
+      select(t, 'Type', [['digital', 'Digital time'], ['analog', 'Analog'], ['date', 'Date']], () => c().kind || 'digital', setC('kind'));
+      select(t, 'Time zone', TIME_ZONES, () => c().timeZone || '', setC('timeZone'));
+      const kind = c().kind || 'digital';
+      if (kind === 'digital') {
+        check(t, '24-hour', () => c().hour12 === false, (on) => upd({ content: { hour12: !on } }));
+        check(t, 'Seconds', () => c().seconds, setC('seconds'));
+        check(t, 'Show AM/PM', () => c().showAmPm !== false, setC('showAmPm'));
+      } else if (kind === 'date') {
+        select(t, 'Format', [['full', 'Monday, October 12, 2026'], ['long', 'October 12, 2026'], ['short', 'Oct 12'], ['weekday', 'Monday']], () => c().dateFormat || 'full', setC('dateFormat'));
+      } else {
+        select(t, 'Face', [['classic', 'Classic'], ['modern', 'Modern'], ['minimal', 'Minimal']], () => c().face || 'classic', setC('face'));
+        check(t, 'Second hand', () => c().secondHand !== false, setC('secondHand'));
+        color(t, 'Color', () => g().style.color, sty('color'), '#ffffff');
+      }
+      if (kind !== 'analog') { fontControls(group('Text'), { size: 160, weight: 700 }); effectControls(); }
+    } else if (el.type === 'timer') {
+      const t = group('Timer');
+      const mode = c().mode || 'until';
+      select(t, 'Type', [['until', 'Count down to a time'], ['duration', 'Count down from a length'], ['stopwatch', 'Stopwatch (count up)']], () => c().mode || 'until', setC('mode'));
+      if (mode === 'until') {
+        const when = h('input', { type: 'datetime-local' });
+        when.oninput = () => upd({ content: { target: when.value } }, 'target');
+        row(t, 'Date and time', when, (n) => { n.value = c().target || ''; });
+        select(t, 'Repeat', [['none', 'Once'], ['daily', 'Every day'], ['weekly', 'Every week']], () => c().repeat || 'none', setC('repeat'));
+        num(t, 'Show zero for (sec)', () => c().holdSec ?? 30, setC('holdSec', 'hold'), { min: 0, max: 86400 });
+      } else if (mode === 'duration') {
+        const setDur = (m, sec) => upd({ content: { durationSec: Math.max(0, m * 60 + sec) } }, 'dur');
+        num(t, 'Minutes', () => Math.floor((c().durationSec || 0) / 60), (v) => setDur(Math.max(0, Math.floor(v)), (c().durationSec || 0) % 60), { min: 0 });
+        num(t, 'Seconds', () => (c().durationSec || 0) % 60, (v) => setDur(Math.floor((c().durationSec || 0) / 60), Math.min(59, Math.max(0, Math.floor(v)))), { min: 0, max: 59 });
+      }
+      select(t, 'Format', [['auto', 'Automatic'], ['hms', 'HH:MM:SS'], ['ms', 'MM:SS']], () => c().format || 'auto', setC('format'));
+      if (mode !== 'stopwatch') {
+        select(t, 'At zero', [['hold', 'Stay at zero'], ['message', 'Show a message'], ['hide', 'Hide timer'], ['flash', 'Flash'], ['next', 'Go to next screen']], () => c().onZero || 'hold', setC('onZero'));
+        const msg = h('input', { type: 'text' });
+        msg.oninput = () => upd({ content: { message: msg.value } }, 'message');
+        row(t, 'Message', msg, (n) => { n.value = c().message || ''; });
+        check(t, 'Beep at zero', () => c().beep, setC('beep'));
+      }
+      t.append(h('p', { className: 'hint', textContent: mode === 'until' ? 'Counts down on its own.' : 'In Show mode press T to start or pause, R to reset.' }));
+      fontControls(group('Text'), { size: 200, weight: 800 });
+      effectControls();
+    } else if (el.type === 'banner') {
+      const t = group('Banner');
+      const text = h('input', { type: 'text' });
+      text.oninput = () => upd({ content: { text: text.value } }, 'btext');
+      row(t, 'Text', text, (n) => { n.value = c().text || ''; });
+      const icon = h('input', { type: 'text', maxLength: 4 });
+      icon.oninput = () => upd({ content: { icon: icon.value } }, 'icon');
+      row(t, 'Icon / emoji', icon, (n) => { n.value = c().icon || ''; });
+      barControls(t);
+    } else if (el.type === 'ticker') {
+      const t = group('Ticker');
+      const msgs = h('textarea', { rows: 4 });
+      msgs.oninput = () => upd({ content: { messages: lines(msgs.value) } }, 'msgs');
+      row(t, 'Messages (one per line)', msgs, (n) => { n.value = (c().messages || []).join('\n'); });
+      num(t, 'Speed (px/sec)', () => c().speed || 140, setC('speed'), { min: 10, max: 1000 });
+      select(t, 'Direction', [['left', 'Right to left'], ['right', 'Left to right']], () => c().direction || 'left', setC('direction'));
+      const sep = h('input', { type: 'text', maxLength: 3 });
+      sep.oninput = () => upd({ content: { separator: sep.value } }, 'sep');
+      row(t, 'Separator', sep, (n) => { n.value = c().separator ?? '•'; });
+      barControls(t);
+    } else if (el.type === 'qr') {
+      const t = group('QR code');
+      const txt = h('textarea', { rows: 3 });
+      txt.oninput = () => upd({ content: { text: txt.value } }, 'qrtext');
+      row(t, 'Link or text', txt, (n) => { n.value = c().text || ''; });
+      select(t, 'Error correction', [['L', 'Low (7%)'], ['M', 'Medium (15%)'], ['Q', 'Quartile (25%)'], ['H', 'High (30%)']], () => c().ecl || 'M', setC('ecl'));
+      color(t, 'Code color', () => g().style.fg, sty('fg'), '#000000', false);
+      color(t, 'Background', () => g().style.bg, sty('bg'), '#ffffff', false);
+      check(t, 'White border', () => g().style.margin !== false, sty('margin'));
+      num(t, 'Corner radius', () => g().style.radius || 0, sty('radius'), { min: 0, max: 400 });
+      t.append(h('p', { className: 'hint', textContent: 'Keep strong contrast (dark code on a light background) so phones can scan it.' }));
     } else if (el.type === 'shape') {
       const t = group('Shape');
       const pr = h('div', { className: 'btn-row preset-row' });
@@ -243,6 +357,19 @@ export function createInspector(root, layersRoot) {
       const alt = h('input', { type: 'text' });
       alt.oninput = () => upd({ content: { alt: alt.value } }, 'alt');
       row(t, 'Alt text', alt, (n) => { n.value = g().content.alt || ''; });
+    }
+
+    else if (el.type === 'scoreboard') {
+      const t = group('Scoreboard');
+      const teams = h('textarea', { rows: 4 });
+      teams.oninput = () => upd({ content: { teams: lines(teams.value) } }, 'teams');
+      row(t, 'Teams (one per line, max 6)', teams, (n) => { n.value = (c().teams || []).join('\n'); });
+      num(t, 'Score size', () => g().style.fontSize || 220, sty('fontSize'), { min: 40, max: 600 });
+      color(t, 'Number color', () => g().style.color, sty('color'), '#ffffff');
+      color(t, 'Name color', () => g().style.nameColor, sty('nameColor'), '#94a3b8');
+      color(t, 'Card color', () => g().style.cardFill, sty('cardFill'), '#ffffff');
+      num(t, 'Corner radius', () => g().style.radius ?? 28, sty('radius'), { min: 0, max: 200 });
+      t.append(h('p', { className: 'hint', textContent: 'In Show mode: keys 1–6 add a point, Shift+1–6 subtract, R resets. Tap the +/− buttons on a touch screen.' }));
     }
 
     const p = group('Position and size');
@@ -277,7 +404,8 @@ export function createInspector(root, layersRoot) {
     const screenBtn = h('button', { type: 'button', className: 'btn small wide', textContent: 'Screen & theme settings', onclick: () => store.select(null) });
     const items = list.length ? list.map((el) => {
       const label = el.type === 'text' ? (el.content.text || 'Text').split('\n')[0].slice(0, 28)
-        : el.type === 'shape' ? (el.style.shape === 'circle' ? 'Circle' : 'Rectangle') : 'Image';
+        : el.type === 'shape' ? (el.style.shape === 'circle' ? 'Circle' : 'Rectangle')
+          : el.type === 'banner' ? (el.content.text || 'Banner').slice(0, 28) : LAYER_NAMES[el.type] || 'Image';
       const item = h('div', { className: 'layer' + (el.id === selectedId ? ' on' : '') + (el.hidden ? ' dim' : '') });
       const name = h('button', { type: 'button', className: 'layer-name', textContent: `${el.locked ? '\u{1F512} ' : ''}${label}` });
       name.onclick = () => store.select(el.id);
@@ -294,7 +422,8 @@ export function createInspector(root, layersRoot) {
     refresh() {
       const el = store.getSelected();
       const s = st();
-      const key = `${s.screenIndex}|${s.selectedId}|${el ? el.type : ''}|${s.structRev}|${s.deck.theme}|${el ? '' : bgMode(cur().background)}`;
+      const sub = el && el.content ? `${el.content.mode || ''}${el.content.kind || ''}${(el.style && el.style.variant) || ''}` : '';
+      const key = `${s.screenIndex}|${s.selectedId}|${el ? el.type : ''}|${sub}|${s.structRev}|${s.deck.theme}|${el ? '' : bgMode(cur().background)}`;
       if (key !== lastKey) {
         lastKey = key;
         root.replaceChildren();

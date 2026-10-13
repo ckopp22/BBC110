@@ -74,8 +74,8 @@ a { color: inherit; }
 .btn.danger { color: #dc2626; }
 .status { color: #94a3b8; font-size: 13px; min-width: 64px; text-align: right; }
 .hint { color: var(--ui-muted); font-size: 13px; margin: 6px 0 0; }
-.add-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 18px; }
-.add-grid .btn { min-height: 48px; }
+.add-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; margin-bottom: 18px; }
+.add-grid .btn { min-height: 48px; padding: 0 6px; font-size: 15px; overflow: hidden; }
 .screen-list { margin-top: 10px; }
 .btn-row { display: flex; flex-wrap: wrap; gap: 6px; }
 .canvas-wrap { flex-direction: column; gap: 8px; }
@@ -167,3 +167,7 @@ a { color: inherit; }
 .field.col { flex-direction: column; align-items: stretch; }
 .btn.wide { width: 100%; margin-bottom: 8px; }
 .preset-row .btn { flex: 1 1 30%; }
+
+.add-sub { grid-column: 1 / -1; margin: 6px 0 0; font-size: 13px; text-transform: uppercase; letter-spacing: .06em; color: var(--ui-muted); }
+.field input[type="datetime-local"] { width: 100%; min-height: 36px; font: inherit; color: var(--ui-fg); background: var(--ui-bg); border: 1px solid var(--ui-line); border-radius: 8px; padding: 4px 8px; }
+.field:has(input[type="datetime-local"]) { flex-direction: column; align-items: stretch; gap: 2px; }

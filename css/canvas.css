@@ -10,9 +10,16 @@
 .screen-bg, .screen-overlay { position: absolute; inset: 0; }
 .screen-bg { background: var(--bg); background-position: center; }
 .el { position: absolute; box-sizing: border-box; transform-origin: 50% 50%; }
-.el-text { display: flex; flex-direction: column; white-space: pre-wrap; overflow-wrap: anywhere; font-family: var(--font-display, inherit); }
+.el-text, .el-clock, .el-timer { display: flex; flex-direction: column; white-space: pre-wrap; overflow-wrap: anywhere; font-family: var(--font-display, inherit); }
 .el-shape { overflow: hidden; }
 .el-image img { border-radius: inherit; }
 .el-text .hl { padding: 0 .25em; border-radius: .15em; -webkit-box-decoration-break: clone; box-decoration-break: clone; }
 .el-image img { width: 100%; height: 100%; display: block; }
 .safe-guide { position: absolute; border: 4px dashed rgba(250, 204, 21, .6); pointer-events: none; }
+
+/* Live elements */
+.el-clock .txt, .el-timer .txt { white-space: nowrap; }
+.el-clock svg { display: block; }
+.sb-btn { visibility: hidden; width: 1.9em; height: 1.9em; border-radius: 50%; border: 0; background: var(--accent); color: var(--bg); font-weight: 800; line-height: 1; cursor: pointer; display: flex; align-items: center; justify-content: center; padding: 0; }
+body.ctl .sb-btn, body.in-editor .sb-btn { visibility: visible; }
+body.in-editor .sb-btn { pointer-events: none; }

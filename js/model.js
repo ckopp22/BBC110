@@ -85,13 +85,32 @@ export function sampleDeck() {
   return deck;
 }
 
-// Starting values for elements added from the Add panel. kind: text | rect | circle | image.
+// Local "YYYY-MM-DDTHH:mm" for the next 6:30 PM, the default target for new countdowns.
+function nextEvening() {
+  const d = new Date();
+  d.setHours(18, 30, 0, 0);
+  if (d.getTime() <= Date.now()) d.setDate(d.getDate() + 1);
+  const p = (n) => String(n).padStart(2, '0');
+  return `${d.getFullYear()}-${p(d.getMonth() + 1)}-${p(d.getDate())}T${p(d.getHours())}:${p(d.getMinutes())}`;
+}
+
+// Starting values for elements added from the Add panel (text, rect, circle, image, clock, timer, banner, ticker, qr, scoreboard).
 export function defaultElement(kind, extra = {}) {
   const presets = {
     text: { type: 'text', w: 900, h: 220, content: { text: 'New text' }, style: { fontSize: 110, fontWeight: 700 } },
     rect: { type: 'shape', w: 500, h: 320, style: { fill: 'var(--accent)', radius: 24 } },
     circle: { type: 'shape', w: 360, h: 360, style: { fill: 'var(--accent)', shape: 'circle' } },
     image: { type: 'image', w: 800, h: 450, content: { src: '', alt: '' }, style: { fit: 'cover', radius: 0 } },
+    clock: { type: 'clock', w: 760, h: 220, content: { kind: 'digital', hour12: true, seconds: false, showAmPm: true, timeZone: '' }, style: { fontSize: 170, fontWeight: 700, align: 'center', valign: 'middle' } },
+    timer: {
+      type: 'timer', w: 1000, h: 280,
+      content: { mode: 'until', target: nextEvening(), repeat: 'none', durationSec: 600, format: 'auto', onZero: 'hold', message: 'Starting now!', holdSec: 30, beep: false },
+      style: { fontSize: 220, fontWeight: 800, align: 'center', valign: 'middle' },
+    },
+    banner: { type: 'banner', w: 1920, h: 150, content: { text: 'Announcement', icon: '\u{1F4E3}' }, style: { variant: 'solid', fontSize: 64, fontWeight: 700, align: 'left' } },
+    ticker: { type: 'ticker', w: 1920, h: 110, content: { messages: ['Welcome!', 'Tonight: game night at 6:30', 'Bring a friend'], speed: 140, direction: 'left', separator: '\u2022' }, style: { variant: 'solid', fontSize: 56, fontWeight: 700 } },
+    qr: { type: 'qr', w: 420, h: 420, content: { text: 'https://example.com', ecl: 'M' }, style: { fg: '#000000', bg: '#ffffff', radius: 16 } },
+    scoreboard: { type: 'scoreboard', w: 1400, h: 520, content: { teams: ['Team A', 'Team B'] }, style: { fontSize: 220 } },
   };
   const { type, ...p } = presets[kind];
   const { content, style, ...rest } = extra;

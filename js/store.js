@@ -150,8 +150,8 @@ export function addElement(kind, extra = {}) {
     const s = d.screens[state.screenIndex];
     const [W, H] = ASPECTS[d.aspect] || ASPECTS['16:9'];
     const el = defaultElement(kind, extra);
-    el.x = Math.round((W - el.w) / 2);
-    el.y = Math.round((H - el.h) / 2);
+    if (kind === 'banner' || kind === 'ticker') { el.w = W; el.x = 0; el.y = H - el.h; }
+    else { el.x = Math.round((W - el.w) / 2); el.y = Math.round((H - el.h) / 2); }
     el.z = maxZ(s) + 1;
     s.elements.push(el);
     id = el.id;

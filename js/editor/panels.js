@@ -23,6 +23,13 @@ export function createPanels(addRoot, screensRoot) {
       const k = Math.min(1, 1400 / img.w, 800 / img.h);
       store.addElement('image', { w: Math.round(img.w * k), h: Math.round(img.h * k), content: { src: img.src, alt: img.name } });
     }),
+    h('h3', { className: 'add-sub', textContent: 'Live' }),
+    btn('Clock', () => store.addElement('clock')),
+    btn('Timer', () => store.addElement('timer')),
+    btn('Banner', () => store.addElement('banner')),
+    btn('Ticker', () => store.addElement('ticker')),
+    btn('QR code', () => store.addElement('qr')),
+    btn('Scoreboard', () => store.addElement('scoreboard')),
   );
 
   const listEl = h('div', { className: 'screen-list' });
@@ -48,7 +55,7 @@ export function createPanels(addRoot, screensRoot) {
       const thumb = h('div');
       const item = h('button', { type: 'button', className: 'screen-item', onclick: () => store.setScreenIndex(i) }, thumb, h('span', { textContent: `${i + 1}. ${s.name}` }));
       item.setAttribute('aria-current', String(i === screenIndex));
-      const st = createStage(thumb, deck);
+      const st = createStage(thumb, deck, { live: false });
       st.setScreen(i);
       stages.push(st);
       return item;

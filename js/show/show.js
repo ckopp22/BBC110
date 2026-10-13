@@ -2,6 +2,7 @@
 import { getDeck } from '../db.js';
 import { createStage, preloadDeck } from '../renderer.js';
 import { sampleDeck } from '../model.js';
+import { getControllers } from '../live.js';
 
 const $ = (id) => document.getElementById(id);
 const body = document.body;
@@ -25,7 +26,7 @@ async function start() {
 
   document.title = `${deck.name} – BBC110 Show`;
   await preloadDeck(deck);
-  const stage = createStage($('host'), deck);
+  const stage = createStage($('host'), deck, { mode: 'show' });
   const count = deck.screens.length;
   const resumeKey = `bbc110.resume.${deck.id}`;
   const mode = deck.mode || 'manual';
@@ -64,7 +65,20 @@ async function start() {
     $('count').textContent = `${index + 1} / ${count}`;
     jump.value = index;
     schedule(durationMs(index));
+    refreshLive();
+    // The old screen's timers are torn down after the fade, so re-check which controls apply.
+    if (changed && transitionMs) setTimeout(refreshLive, transitionMs + 100);
   }
+
+  // Timer and scoreboard controls only appear when the current screen has them.
+  function refreshLive() {
+    const timers = getControllers('timer'), scores = getControllers('score');
+    $('bTimer').hidden = !timers.length;
+    $('bReset').hidden = !(timers.length || scores.length);
+    $('bTimer').textContent = timers.some((t) => t.running) ? 'Pause' : 'Start';
+  }
+  const toggleTimers = () => { getControllers('timer').forEach((t) => t.toggle()); refreshLive(); };
+  const resetLive = () => { getControllers('timer').forEach((t) => t.reset()); getControllers('score').forEach((c) => c.reset()); refreshLive(); };
 
   function setPaused(p) {
     if (mode === 'manual') return;
@@ -104,6 +118,7 @@ async function start() {
   function activity() {
     body.classList.add('ctl');
     body.classList.remove('idle');
+    refreshLive();
     clearTimeout(ctlTimer); clearTimeout(cursorTimer);
     ctlTimer = setTimeout(() => body.classList.remove('ctl'), 3000);
     cursorTimer = setTimeout(() => body.classList.add('idle'), 2000);
@@ -118,7 +133,10 @@ async function start() {
   $('bNext').onclick = () => go(index + 1);
   $('bPlay').onclick = () => setPaused(!paused);
   $('bBlack').onclick = () => { body.classList.toggle('blank'); $('bBlack').classList.toggle('on', body.classList.contains('blank')); };
+  $('bTimer').onclick = toggleTimers;
+  $('bReset').onclick = resetLive;
   $('bFull').onclick = toggleFull;
+  document.addEventListener('bbc110:timer-zero', () => go(index + 1));
   $('bExit').onclick = exit;
   jump.onchange = () => go(parseInt(jump.value, 10));
   $('bPlay').hidden = mode === 'manual';
@@ -134,6 +152,9 @@ async function start() {
     else if (k === 'f' || k === 'F') toggleFull();
     else if (k === 'b' || k === 'B' || k === '.') $('bBlack').click();
     else if (k === 'p' || k === 'P') setPaused(!paused);
+    else if (k === 't' || k === 'T') toggleTimers();
+    else if (k === 'r' || k === 'R') resetLive();
+    else if (/^Digit[1-6]$/.test(e.code)) getControllers('score').forEach((c) => c.adjust(+e.code.slice(5) - 1, e.shiftKey ? -1 : 1));
     else if (k === 'Escape' && !isFull()) exit();
     else return;
     e.preventDefault();
@@ -145,6 +166,7 @@ async function start() {
     const touchHidden = e.pointerType === 'touch' && !body.classList.contains('ctl');
     activity();
     wake();
+    if (e.target.closest && e.target.closest('.sb-btn')) return;
     if (touchHidden || mode !== 'manual') return;
     go(e.clientX < innerWidth * 0.25 ? index - 1 : index + 1);
   });
