@@ -2,6 +2,7 @@
 import * as db from './db.js';
 import { createHistory } from './history.js';
 import { ASPECTS, newDeck, newScreen, sampleDeck, defaultElement, uid } from './model.js';
+import { instantiateScreen } from './templates.js';
 
 // rev: bumps on every change. structRev: bumps when the shape of the deck changes (add/remove/undo...).
 const state = { library: [], trash: [], deck: null, screenIndex: 0, selectedId: null, rev: 0, structRev: 0, dirty: false };
@@ -182,6 +183,13 @@ export function setScreenProps(patch, key) {
 export function addScreen() {
   updateDeck((d) => {
     d.screens.splice(state.screenIndex + 1, 0, newScreen(`Screen ${d.screens.length + 1}`, { durationSec: d.defaultDurationSec }));
+  });
+  setScreenIndex(state.screenIndex + 1);
+}
+
+export function addScreenFromTemplate(tpl, index) {
+  updateDeck((d) => {
+    d.screens.splice(state.screenIndex + 1, 0, instantiateScreen(tpl, index));
   });
   setScreenIndex(state.screenIndex + 1);
 }

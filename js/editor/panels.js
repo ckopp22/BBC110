@@ -2,6 +2,7 @@
 import * as store from '../store.js';
 import { createStage } from '../renderer.js';
 import { pickImage } from './images.js';
+import { openScreenTemplateDialog } from './screentemplates.js';
 
 const h = (tag, props = {}, ...kids) => {
   const n = Object.assign(document.createElement(tag), props);
@@ -34,7 +35,7 @@ export function createPanels(addRoot, screensRoot) {
 
   const listEl = h('div', { className: 'screen-list' });
   const bar = h('div', { className: 'btn-row' });
-  const bAdd = btn('+ New', () => store.addScreen());
+  const bAdd = btn('+ New', () => openScreenTemplateDialog());
   const bDup = btn('Duplicate', () => store.duplicateScreen());
   const bUp = btn('↑', () => store.moveScreen(-1), { ariaLabel: 'Move screen earlier' });
   const bDown = btn('↓', () => store.moveScreen(1), { ariaLabel: 'Move screen later' });

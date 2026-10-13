@@ -227,6 +227,8 @@ a { color: inherit; }
 .card-body { gap: 2px; }
 
 .export-dialog, .versions-dialog { max-width: 480px; width: calc(100vw - 32px); max-height: 85vh; overflow: auto; }
+.screen-template-dialog { max-width: 900px; width: calc(100vw - 32px); max-height: 85vh; overflow: auto; }
+.screen-template-dialog .sub { margin: 0 0 16px; color: var(--ui-muted); }
 .export-rows { display: flex; flex-direction: column; gap: 10px; margin: 14px 0; }
 .export-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 10px 14px; border: 1px solid var(--ui-line); border-radius: 12px; }
 .export-row-text { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
