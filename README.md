@@ -5,7 +5,7 @@ Design a screen, hit **Publish**, and show it on any TV or projector. Plain HTML
 Live: https://ckopp22.github.io/BBC110/
 
 ## Status
-- Phases 1 to 8 complete (foundation, core engine, editor basics, style system, smart elements, animation, templates, publish/output). See `BBC110_MDD.md` §14 for the roadmap.
+- Phases 1 to 9 complete (foundation, core engine, editor basics, style system, smart elements, animation, templates, publish/output, save/export). See `BBC110_MDD.md` §14 for the roadmap.
 
 ## Run locally
 Serve the folder with any static server (service workers need http://localhost or https):

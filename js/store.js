@@ -4,10 +4,12 @@ import { createHistory } from './history.js';
 import { ASPECTS, newDeck, newScreen, sampleDeck, defaultElement, uid } from './model.js';
 
 // rev: bumps on every change. structRev: bumps when the shape of the deck changes (add/remove/undo...).
-const state = { library: [], deck: null, screenIndex: 0, selectedId: null, rev: 0, structRev: 0, dirty: false };
+const state = { library: [], trash: [], deck: null, screenIndex: 0, selectedId: null, rev: 0, structRev: 0, dirty: false };
 const listeners = new Set();
 const history = createHistory();
 let saveTimer = null;
+const lastSnapshotAt = {}; // deckId -> ms, throttles automatic version snapshots
+const SNAPSHOT_INTERVAL_MS = 2 * 60 * 1000;
 
 export const getState = () => state;
 export function subscribe(fn) { listeners.add(fn); return () => listeners.delete(fn); }
@@ -25,16 +27,34 @@ export async function loadLibrary() {
   emit();
 }
 
+export async function loadTrash() {
+  state.trash = await db.listTrash();
+  emit();
+}
+
 export async function createDeck(kind = 'blank') {
   const deck = kind === 'sample' ? sampleDeck() : newDeck('Untitled', [newScreen('Screen 1')]);
   await db.putDeck(deck);
   return deck.id;
 }
 
-// Saves a deck built elsewhere (e.g. from a template) and returns its id.
+// Saves a deck built elsewhere (e.g. from a template or an import) and returns its id.
 export async function saveNewDeck(deck) {
   await db.putDeck(deck);
   return deck.id;
+}
+
+export async function duplicateDeck(id) {
+  const src = await db.getDeck(id);
+  if (!src) return null;
+  const copy = JSON.parse(JSON.stringify(src));
+  copy.id = uid();
+  copy.name += ' copy';
+  copy.createdAt = copy.updatedAt = Date.now();
+  delete copy.trashedAt;
+  await db.putDeck(copy);
+  await loadLibrary();
+  return copy.id;
 }
 
 export async function openDeck(id) {
@@ -45,13 +65,54 @@ export async function openDeck(id) {
   state.selectedId = null;
   state.dirty = false;
   history.clear();
+  if (deck) {
+    // Mark the start of this editing session so it can be restored later.
+    db.putSnapshot({ deckId: deck.id, at: Date.now(), deck: JSON.parse(JSON.stringify(deck)) }).then(() => db.pruneSnapshots(deck.id));
+    lastSnapshotAt[deck.id] = Date.now();
+  }
   emit();
   return !!deck;
 }
 
+// Soft delete: moves the deck to Trash, where it's recoverable for 30 days.
 export async function removeDeck(id) {
-  await db.deleteDeck(id);
+  await db.trashDeck(id);
   await loadLibrary();
+}
+
+export async function restoreFromTrash(id) {
+  await db.restoreDeck(id);
+  await loadTrash();
+  await loadLibrary();
+}
+
+// Permanently deletes a trashed deck and its version history.
+export async function purgeForever(id) {
+  await db.deleteDeck(id);
+  await db.deleteSnapshotsForDeck(id);
+  await loadTrash();
+}
+
+// ---- version history ----
+export const listVersions = (deckId) => db.listSnapshots(deckId);
+
+export async function restoreVersion(snapshotDeck) {
+  if (!state.deck) return;
+  if (history.begin()) history.push(JSON.stringify(state.deck));
+  // Snapshot the pre-restore state immediately (bypassing the usual throttle), so restoring is
+  // itself always recoverable from Version history, not just via in-session undo.
+  const now = Date.now();
+  lastSnapshotAt[state.deck.id] = now;
+  await db.putSnapshot({ deckId: state.deck.id, at: now, deck: JSON.parse(JSON.stringify(state.deck)) });
+  await db.pruneSnapshots(state.deck.id);
+  const keepId = state.deck.id, keepCreated = state.deck.createdAt;
+  state.deck = { ...JSON.parse(JSON.stringify(snapshotDeck)), id: keepId, createdAt: keepCreated, updatedAt: Date.now() };
+  state.screenIndex = Math.min(state.screenIndex, state.deck.screens.length - 1);
+  state.selectedId = null;
+  state.rev++; state.structRev++; state.dirty = true;
+  clearTimeout(saveTimer);
+  saveTimer = setTimeout(flush, 400);
+  emit();
 }
 
 // Mutates the open deck, records an undo step, and autosaves shortly after the last change.
@@ -72,7 +133,14 @@ export async function flush() {
   saveTimer = null;
   if (state.deck && state.dirty) {
     state.dirty = false;
-    await db.putDeck(state.deck);
+    const deck = state.deck;
+    await db.putDeck(deck);
+    const now = Date.now();
+    if (now - (lastSnapshotAt[deck.id] || 0) > SNAPSHOT_INTERVAL_MS) {
+      lastSnapshotAt[deck.id] = now;
+      await db.putSnapshot({ deckId: deck.id, at: now, deck: JSON.parse(JSON.stringify(deck)) });
+      await db.pruneSnapshots(deck.id);
+    }
     emit();
   }
 }

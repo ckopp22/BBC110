@@ -6,6 +6,8 @@ import { createInspector } from './inspector.js';
 import { createPanels } from './panels.js';
 import { entranceEndMs, reduceMotion } from '../animator.js';
 import { openPublishDialog } from './publish.js';
+import { openExportDialog } from './exportdialog.js';
+import { openVersionsDialog } from './versions.js';
 import { createPresentBar } from './presentbar.js';
 
 let cleanup = null;
@@ -35,9 +37,12 @@ export async function renderEditor(root, actions, id) {
   undoBtn.setAttribute('aria-label', 'Undo');
   redoBtn.setAttribute('aria-label', 'Redo');
   const status = mk('span', { className: 'status', textContent: 'Saved' });
+  const historyBtn = mk('button', { className: 'btn icon', textContent: '⌚', title: 'Version history', type: 'button', onclick: () => openVersionsDialog(deck.id) });
+  historyBtn.setAttribute('aria-label', 'Version history');
+  const exportBtn = mk('button', { className: 'btn', textContent: 'Export', type: 'button', onclick: () => openExportDialog(store.getState().deck, { screenIndex: store.getState().screenIndex }) });
   const publish = mk('button', { className: 'btn btn-primary', textContent: 'Publish', type: 'button' });
   publish.onclick = () => openPublishDialog(store.getState().deck, { onPresenting: refreshPresentBar });
-  actions.append(back, name, undoBtn, redoBtn, status, publish);
+  actions.append(back, name, undoBtn, redoBtn, historyBtn, status, exportBtn, publish);
 
   // ---- layout ----
   root.innerHTML = `

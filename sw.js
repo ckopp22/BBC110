@@ -1,5 +1,5 @@
 // Bump CACHE_VERSION on every release so installed PWAs pick up the update.
-const CACHE_VERSION = 'bbc110-v7';
+const CACHE_VERSION = 'bbc110-v8';
 
 const PRECACHE = [
   './',
@@ -22,6 +22,10 @@ const PRECACHE = [
   'js/pwa.js',
   'js/history.js',
   'js/live.js',
+  'js/bundle.js',
+  'js/export.js',
+  'js/import.js',
+  'js/trash.js',
   'js/animator.js',
   'js/sync.js',
   'js/preflight.js',
@@ -34,6 +38,8 @@ const PRECACHE = [
   'js/editor/inspector.js',
   'js/editor/panels.js',
   'js/editor/images.js',
+  'js/editor/exportdialog.js',
+  'js/editor/versions.js',
   'js/editor/publish.js',
   'js/editor/presentbar.js',
   'js/editor/colorpicker.js',
