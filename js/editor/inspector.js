@@ -139,6 +139,8 @@ export function createInspector(root, layersRoot, hooks = {}) {
     num(an, 'Duration (ms)', () => (deck().transition && deck().transition.durationMs) ?? 600, (v) => store.updateDeck((d) => { d.transition = { ...d.transition, durationMs: Math.round(v) }; }, 'trans-ms'), { min: 100, max: 3000, step: 50 });
     select(an, 'This screen', [['', 'Same as deck'], ...TRANSITIONS], () => (cur().transition && cur().transition.type) || '', (v) => store.setScreenProps({ transition: v ? { type: v } : null }));
     num(an, 'Stagger (ms)', () => cur().stagger || 0, (v) => store.setScreenProps({ stagger: Math.max(0, Math.round(v)) }, 'stagger'), { min: 0, max: 2000, step: 50 });
+    select(an, 'Playback', [['manual', 'Manual (keys or taps)'], ['loop', 'Loop on a timer'], ['timed', 'Play once on a timer']], () => deck().mode || 'manual', (v) => store.updateDeck((d) => { d.mode = v; }));
+    num(an, 'Default seconds', () => deck().defaultDurationSec || 10, (v) => store.updateDeck((d) => { d.defaultDurationSec = Math.max(1, Math.round(v)); }, 'def-sec'), { min: 1, max: 3600 });
     select(an, 'Reduce motion', [['system', 'Follow device'], ['on', 'Always'], ['off', 'Never']], getMotionSetting, (v) => { setMotionSetting(v); if (hooks.motion) hooks.motion(); });
     button(an, '\u25B6 Preview screen', () => hooks.preview && hooks.preview());
     an.append(h('p', { className: 'hint', textContent: 'Stagger adds a delay to each element\u2019s entrance, in stacking order.' }));

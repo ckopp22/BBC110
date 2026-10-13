@@ -89,7 +89,7 @@ export function sampleDeck() {
 }
 
 // Local "YYYY-MM-DDTHH:mm" for the next 6:30 PM, the default target for new countdowns.
-function nextEvening() {
+export function nextEvening() {
   const d = new Date();
   d.setHours(18, 30, 0, 0);
   if (d.getTime() <= Date.now()) d.setDate(d.getDate() + 1);

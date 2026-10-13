@@ -31,6 +31,12 @@ export async function createDeck(kind = 'blank') {
   return deck.id;
 }
 
+// Saves a deck built elsewhere (e.g. from a template) and returns its id.
+export async function saveNewDeck(deck) {
+  await db.putDeck(deck);
+  return deck.id;
+}
+
 export async function openDeck(id) {
   await flush();
   const deck = await db.getDeck(id);

@@ -14,11 +14,12 @@ export async function renderLibrary(root, actions) {
     <h1>My Screens</h1>
     <p class="sub">Build a screen, then Publish it to a TV or projector.</p>
     <div class="actions">
-      <button class="btn btn-primary" data-new="blank">New screen</button>
-      <button class="btn" data-new="sample">Start from sample</button>
+      <a class="btn btn-primary" href="#/new" data-new="template">New from template</a>
+      <button class="btn" data-new="blank">Blank screen</button>
+      <button class="btn" data-new="sample">Try the sample</button>
     </div>`;
 
-  wrap.querySelectorAll('[data-new]').forEach((b) => {
+  wrap.querySelectorAll('button[data-new]').forEach((b) => {
     b.onclick = async () => {
       const id = await store.createDeck(b.dataset.new);
       location.hash = `#/edit/${id}`;
@@ -28,7 +29,7 @@ export async function renderLibrary(root, actions) {
   if (!library.length) {
     const empty = document.createElement('div');
     empty.className = 'empty';
-    empty.textContent = 'Nothing here yet. Start from the sample to see how it looks.';
+    empty.textContent = 'Nothing here yet. Pick a template to get a good-looking screen in a minute.';
     wrap.append(empty);
   } else {
     const grid = document.createElement('div');

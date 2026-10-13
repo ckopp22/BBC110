@@ -1,0 +1,3395 @@
+[
+ {
+  "id": "announcement-bold",
+  "name": "Big Announcement",
+  "category": "Announcement",
+  "description": "Headline, details, date and time, and a call to action.",
+  "deck": {
+   "theme": "sunrise",
+   "mode": "manual",
+   "aspect": "16:9",
+   "defaultDurationSec": 12,
+   "screens": [
+    {
+     "name": "Announcement",
+     "durationSec": 12,
+     "background": {
+      "type": "color",
+      "value": ""
+     },
+     "elements": [
+      {
+       "type": "shape",
+       "x": 1250,
+       "y": -300,
+       "w": 1100,
+       "h": 1100,
+       "rotation": 0,
+       "content": {},
+       "style": {
+        "fill": "var(--accent)",
+        "shape": "circle",
+        "opacity": 0.2
+       },
+       "animation": {
+        "in": "zoom",
+        "loop": "none",
+        "out": "none",
+        "delayMs": 0,
+        "durationMs": 1200,
+        "easing": "smooth"
+       },
+       "z": 1
+      },
+      {
+       "type": "shape",
+       "x": -200,
+       "y": 700,
+       "w": 600,
+       "h": 600,
+       "rotation": 0,
+       "content": {},
+       "style": {
+        "fill": "var(--fg)",
+        "shape": "circle",
+        "opacity": 0.07
+       },
+       "animation": {
+        "in": "zoom",
+        "loop": "none",
+        "out": "none",
+        "delayMs": 200,
+        "durationMs": 1200,
+        "easing": "smooth"
+       },
+       "z": 2
+      },
+      {
+       "type": "text",
+       "x": 120,
+       "y": 130,
+       "w": 1000,
+       "h": 70,
+       "rotation": 0,
+       "content": {
+        "text": "ANNOUNCEMENT"
+       },
+       "style": {
+        "fontSize": 44,
+        "fontWeight": 700,
+        "align": "left",
+        "valign": "top",
+        "color": "var(--accent)",
+        "fontFamily": "var(--font-body)",
+        "letterSpacing": 10
+       },
+       "animation": {
+        "in": "slide-right",
+        "loop": "none",
+        "out": "none",
+        "delayMs": 0,
+        "durationMs": 700,
+        "easing": "smooth"
+       },
+       "z": 3
+      },
+      {
+       "type": "text",
+       "x": 120,
+       "y": 210,
+       "w": 1500,
+       "h": 350,
+       "rotation": 0,
+       "content": {
+        "text": "Big News This Week"
+       },
+       "style": {
+        "fontSize": 150,
+        "fontWeight": 800,
+        "align": "left",
+        "valign": "top",
+        "lineHeight": 1.05
+       },
+       "animation": {
+        "in": "slide-up",
+        "loop": "none",
+        "out": "none",
+        "delayMs": 150,
+        "durationMs": 800,
+        "easing": "smooth"
+       },
+       "z": 4
+      },
+      {
+       "type": "text",
+       "x": 120,
+       "y": 590,
+       "w": 1300,
+       "h": 190,
+       "rotation": 0,
+       "content": {
+        "text": "Add the details here. Keep it short so it can be read from across the room."
+       },
+       "style": {
+        "fontSize": 54,
+        "fontWeight": 500,
+        "align": "left",
+        "valign": "top",
+        "color": "var(--muted)",
+        "fontFamily": "var(--font-body)",
+        "lineHeight": 1.3
+       },
+       "animation": {
+        "in": "fade",
+        "loop": "none",
+        "out": "none",
+        "delayMs": 500,
+        "durationMs": 900,
+        "easing": "smooth"
+       },
+       "z": 5
+      },
+      {
+       "type": "shape",
+       "x": 120,
+       "y": 830,
+       "w": 660,
+       "h": 110,
+       "rotation": 0,
+       "content": {},
+       "style": {
+        "fill": "var(--card)",
+        "radius": 55
+       },
+       "animation": {
+        "in": "fade",
+        "loop": "none",
+        "out": "none",
+        "delayMs": 700,
+        "durationMs": 700,
+        "easing": "smooth"
+       },
+       "z": 6
+      },
+      {
+       "type": "text",
+       "x": 120,
+       "y": 830,
+       "w": 660,
+       "h": 110,
+       "rotation": 0,
+       "content": {
+        "text": "Wed, Oct 14  •  6:30 PM"
+       },
+       "style": {
+        "fontSize": 46,
+        "fontWeight": 700,
+        "align": "center",
+        "valign": "middle",
+        "fontFamily": "var(--font-body)"
+       },
+       "animation": {
+        "in": "fade",
+        "loop": "none",
+        "out": "none",
+        "delayMs": 700,
+        "durationMs": 700,
+        "easing": "smooth"
+       },
+       "z": 7
+      },
+      {
+       "type": "shape",
+       "x": 820,
+       "y": 830,
+       "w": 620,
+       "h": 110,
+       "rotation": 0,
+       "content": {},
+       "style": {
+        "fill": "var(--accent)",
+        "radius": 55
+       },
+       "animation": {
+        "in": "zoom",
+        "loop": "none",
+        "out": "none",
+        "delayMs": 900,
+        "durationMs": 600,
+        "easing": "smooth"
+       },
+       "z": 8
+      },
+      {
+       "type": "text",
+       "x": 820,
+       "y": 830,
+       "w": 620,
+       "h": 110,
+       "rotation": 0,
+       "content": {
+        "text": "Sign up at the desk"
+       },
+       "style": {
+        "fontSize": 42,
+        "fontWeight": 700,
+        "align": "center",
+        "valign": "middle",
+        "color": "var(--bg)",
+        "fontFamily": "var(--font-body)"
+       },
+       "animation": {
+        "in": "zoom",
+        "loop": "none",
+        "out": "none",
+        "delayMs": 900,
+        "durationMs": 600,
+        "easing": "smooth"
+       },
+       "z": 9
+      }
+     ]
+    }
+   ]
+  }
+ },
+ {
+  "id": "event-signup",
+  "name": "Event with Sign-up Code",
+  "category": "Announcement",
+  "description": "Invitation with the details on the left and a scannable QR code on the right.",
+  "deck": {
+   "theme": "ocean",
+   "mode": "manual",
+   "aspect": "16:9",
+   "defaultDurationSec": 12,
+   "screens": [
+    {
+     "name": "Invitation",
+     "durationSec": 12,
+     "background": {
+      "type": "gradient",
+      "value": "linear-gradient(160deg, var(--bg), var(--card))",
+      "gradient": {
+       "kind": "linear",
+       "angle": 160,
+       "c1": "var(--bg)",
+       "c2": "var(--card)"
+      }
+     },
+     "elements": [
+      {
+       "type": "text",
+       "x": 120,
+       "y": 130,
+       "w": 1000,
+       "h": 70,
+       "rotation": 0,
+       "content": {
+        "text": "YOU'RE INVITED"
+       },
+       "style": {
+        "fontSize": 44,
+        "fontWeight": 700,
+        "align": "left",
+        "valign": "top",
+        "color": "var(--accent)",
+        "fontFamily": "var(--font-body)",
+        "letterSpacing": 10
+       },
+       "animation": {
+        "in": "slide-right",
+        "loop": "none",
+        "out": "none",
+        "delayMs": 0,
+        "durationMs": 700,
+        "easing": "smooth"
+       },
+       "z": 1
+      },
+      {
+       "type": "text",
+       "x": 120,
+       "y": 210,
+       "w": 1050,
+       "h": 330,
+       "rotation": 0,
+       "content": {
+        "text": "Fall Retreat"
+       },
+       "style": {
+        "fontSize": 150,
+        "fontWeight": 800,
+        "align": "left",
+        "valign": "top",
+        "lineHeight": 1.05
+       },
+       "animation": {
+        "in": "slide-up",
+        "loop": "none",
+        "out": "none",
+        "delayMs": 150,
+        "durationMs": 800,
+        "easing": "smooth"
+       },
+       "z": 2
+      },
+      {
+       "type": "text",
+       "x": 120,
+       "y": 560,
+       "w": 1050,
+       "h": 230,
+       "rotation": 0,
+       "content": {
+        "text": "Friday to Sunday at Camp Pine Lake.\nCost: $75. Scholarships available."
+       },
+       "style": {
+        "fontSize": 52,
+        "fontWeight": 500,
+        "align": "left",
+        "valign": "top",
+        "color": "var(--muted)",
+        "fontFamily": "var(--font-body)",
+        "lineHeight": 1.35
+       },
+       "animation": {
+        "in": "fade",
+        "loop": "none",
+        "out": "none",
+        "delayMs": 500,
+        "durationMs": 900,
+        "easing": "smooth"
+       },
+       "z": 3
+      },
+      {
+       "type": "shape",
+       "x": 120,
+       "y": 840,
+       "w": 760,
+       "h": 110,
+       "rotation": 0,
+       "content": {},
+       "style": {
+        "fill": "var(--accent)",
+        "radius": 55
+       },
+       "animation": {
+        "in": "zoom",
+        "loop": "none",
+        "out": "none",
+        "delayMs": 800,
+        "durationMs": 600,
+        "easing": "smooth"
+       },
+       "z": 4
+      },
+      {
+       "type": "text",
+       "x": 120,
+       "y": 840,
+       "w": 760,
+       "h": 110,
+       "rotation": 0,
+       "content": {
+        "text": "Oct 23–25  •  Leave at 5 PM"
+       },
+       "style": {
+        "fontSize": 44,
+        "fontWeight": 700,
+        "align": "center",
+        "valign": "middle",
+        "color": "var(--bg)",
+        "fontFamily": "var(--font-body)"
+       },
+       "animation": {
+        "in": "zoom",
+        "loop": "none",
+        "out": "none",
+        "delayMs": 800,
+        "durationMs": 600,
+        "easing": "smooth"
+       },
+       "z": 5
+      },
+      {
+       "type": "shape",
+       "x": 1250,
+       "y": 170,
+       "w": 560,
+       "h": 700,
+       "rotation": 0,
+       "content": {},
+       "style": {
+        "fill": "#ffffff",
+        "radius": 40,
+        "shadow": 60
+       },
+       "animation": {
+        "in": "slide-left",
+        "loop": "none",
+        "out": "none",
+        "delayMs": 300,
+        "durationMs": 800,
+        "easing": "smooth"
+       },
+       "z": 6
+      },
+      {
+       "type": "qr",
+       "x": 1290,
+       "y": 210,
+       "w": 480,
+       "h": 480,
+       "rotation": 0,
+       "content": {
+        "text": "https://example.com/signup",
+        "ecl": "M"
+       },
+       "style": {
+        "fg": "#000000",
+        "bg": "#ffffff",
+        "radius": 16
+       },
+       "animation": {
+        "in": "slide-left",
+        "loop": "none",
+        "out": "none",
+        "delayMs": 300,
+        "durationMs": 800,
+        "easing": "smooth"
+       },
+       "z": 7
+      },
+      {
+       "type": "text",
+       "x": 1250,
+       "y": 720,
+       "w": 560,
+       "h": 110,
+       "rotation": 0,
+       "content": {
+        "text": "Scan to sign up"
+       },
+       "style": {
+        "fontSize": 46,
+        "fontWeight": 800,
+        "align": "center",
+        "valign": "middle",
+        "color": "#0f172a",
+        "fontFamily": "var(--font-body)"
+       },
+       "animation": {
+        "in": "fade",
+        "loop": "none",
+        "out": "none",
+        "delayMs": 900,
+        "durationMs": 700,
+        "easing": "smooth"
+       },
+       "z": 8
+      }
+     ]
+    }
+   ]
+  }
+ },
+ {
+  "id": "presentation-starter",
+  "name": "Presentation (5 slides)",
+  "category": "Presentation",
+  "description": "Title slide, bullet points, big quote, image with text, and a scripture slide. Click or use arrow keys to advance.",
+  "deck": {
+   "theme": "clean",
+   "mode": "manual",
+   "aspect": "16:9",
+   "defaultDurationSec": 12,
+   "screens": [
+    {
+     "name": "Title",
+     "durationSec": 12,
+     "background": {
+      "type": "color",
+      "value": ""
+     },
+     "elements": [
+      {
+       "type": "shape",
+       "x": 0,
+       "y": 0,
+       "w": 40,
+       "h": 1080,
+       "rotation": 0,
+       "content": {},
+       "style": {
+        "fill": "var(--accent)",
+        "radius": 0
+       },
+       "z": 1
+      },
+      {
+       "type": "text",
+       "x": 160,
+       "y": 190,
+       "w": 1600,
+       "h": 240,
+       "rotation": 0,
+       "content": {
+        "text": "Presentation Title"
+       },
+       "style": {
+        "fontSize": 140,
+        "fontWeight": 800,
+        "align": "left",
+        "valign": "bottom",
+        "lineHeight": 1.05
+       },
+       "animation": {
+        "in": "slide-up",
+        "loop": "none",
+        "out": "none",
+        "delayMs": 0,
+        "durationMs": 800,
+        "easing": "smooth"
+       },
+       "z": 2
+      },
+      {
+       "type": "shape",
+       "x": 160,
+       "y": 470,
+       "w": 200,
+       "h": 12,
+       "rotation": 0,
+       "content": {},
+       "style": {
+        "fill": "var(--accent)",
+        "radius": 6
+       },
+       "animation": {
+        "in": "slide-right",
+        "loop": "none",
+        "out": "none",
+        "delayMs": 400,
+        "durationMs": 600,
+        "easing": "smooth"
+       },
+       "z": 3
+      },
+      {
+       "type": "text",
+       "x": 160,
+       "y": 520,
+       "w": 1500,
+       "h": 130,
+       "rotation": 0,
+       "content": {
+        "text": "Speaker name  •  Date"
+       },
+       "style": {
+        "fontSize": 58,
+        "fontWeight": 500,
+        "align": "left",
+        "valign": "top",
+        "color": "var(--muted)",
+        "fontFamily": "var(--font-body)"
+       },
+       "animation": {
+        "in": "fade",
+        "loop": "none",
+        "out": "none",
+        "delayMs": 600,
+        "durationMs": 900,
+        "easing": "smooth"
+       },
+       "z": 4
+      }
+     ]
+    },
+    {
+     "name": "Key points",
+     "durationSec": 12,
+     "background": {
+      "type": "color",
+      "value": ""
+     },
+     "elements": [
+      {
+       "type": "shape",
+       "x": 0,
+       "y": 0,
+       "w": 40,
+       "h": 1080,
+       "rotation": 0,
+       "content": {},
+       "style": {
+        "fill": "var(--accent)",
+        "radius": 0
+       },
+       "z": 1
+      },
+      {
+       "type": "text",
+       "x": 160,
+       "y": 90,
+       "w": 1600,
+       "h": 150,
+       "rotation": 0,
+       "content": {
+        "text": "Key Points"
+       },
+       "style": {
+        "fontSize": 100,
+        "fontWeight": 800,
+        "align": "left",
+        "valign": "top"
+       },
+       "animation": {
+        "in": "slide-right",
+        "loop": "none",
+        "out": "none",
+        "delayMs": 0,
+        "durationMs": 700,
+        "easing": "smooth"
+       },
+       "z": 2
+      },
+      {
+       "type": "text",
+       "x": 160,
+       "y": 290,
+       "w": 1600,
+       "h": 640,
+       "rotation": 0,
+       "content": {
+        "text": "•  First point goes here\n•  Second point goes here\n•  Third point goes here"
+       },
+       "style": {
+        "fontSize": 68,
+        "fontWeight": 500,
+        "align": "left",
+        "valign": "top",
+        "fontFamily": "var(--font-body)",
+        "lineHeight": 1.7
+       },
+       "animation": {
+        "in": "fade",
+        "loop": "none",
+        "out": "none",
+        "delayMs": 300,
+        "durationMs": 900,
+        "easing": "smooth"
+       },
+       "z": 3
+      }
+     ]
+    },
+    {
+     "name": "Big quote",
+     "durationSec": 12,
+     "background": {
+      "type": "color",
+      "value": "var(--accent)"
+     },
+     "elements": [
+      {
+       "type": "text",
+       "x": 140,
+       "y": -60,
+       "w": 600,
+       "h": 560,
+       "rotation": 0,
+       "content": {
+        "text": "“"
+       },
+       "style": {
+        "fontSize": 520,
+        "fontWeight": 800,
+        "align": "left",
+        "valign": "top",
+        "color": "var(--bg)"
+       },
+       "animation": {
+        "in": "fade",
+        "loop": "none",
+        "out": "none",
+        "delayMs": 0,
+        "durationMs": 900,
+        "easing": "smooth"
+       },
+       "z": 1
+      },
+      {
+       "type": "text",
+       "x": 260,
+       "y": 240,
+       "w": 1400,
+       "h": 460,
+       "rotation": 0,
+       "content": {
+        "text": "Your big quote goes here."
+       },
+       "style": {
+        "fontSize": 96,
+        "fontWeight": 700,
+        "align": "left",
+        "valign": "middle",
+        "color": "var(--bg)",
+        "lineHeight": 1.2
+       },
+       "animation": {
+        "in": "slide-up",
+        "loop": "none",
+        "out": "none",
+        "delayMs": 200,
+        "durationMs": 800,
+        "easing": "smooth"
+       },
+       "z": 2
+      },
+      {
+       "type": "text",
+       "x": 260,
+       "y": 740,
+       "w": 1400,
+       "h": 100,
+       "rotation": 0,
+       "content": {
+        "text": "— Name"
+       },
+       "style": {
+        "fontSize": 52,
+        "fontWeight": 600,
+        "align": "left",
+        "valign": "top",
+        "color": "var(--bg)",
+        "fontFamily": "var(--font-body)"
+       },
+       "animation": {
+        "in": "fade",
+        "loop": "none",
+        "out": "none",
+        "delayMs": 800,
+        "durationMs": 800,
+        "easing": "smooth"
+       },
+       "z": 3
+      }
+     ]
+    },
+    {
+     "name": "Image and text",
+     "durationSec": 12,
+     "background": {
+      "type": "color",
+      "value": ""
+     },
+     "elements": [
+      {
+       "type": "shape",
+       "x": 120,
+       "y": 140,
+       "w": 820,
+       "h": 800,
+       "rotation": 0,
+       "content": {},
+       "style": {
+        "fill": "var(--card)",
+        "radius": 40
+       },
+       "animation": {
+        "in": "fade",
+        "loop": "none",
+        "out": "none",
+        "delayMs": 0,
+        "durationMs": 700,
+        "easing": "smooth"
+       },
+       "z": 1
+      },
+      {
+       "type": "text",
+       "x": 120,
+       "y": 140,
+       "w": 820,
+       "h": 800,
+       "rotation": 0,
+       "content": {
+        "text": "Add a photo here\n(Add › Image)"
+       },
+       "style": {
+        "fontSize": 50,
+        "fontWeight": 600,
+        "align": "center",
+        "valign": "middle",
+        "color": "var(--muted)",
+        "fontFamily": "var(--font-body)"
+       },
+       "animation": {
+        "in": "fade",
+        "loop": "none",
+        "out": "none",
+        "delayMs": 0,
+        "durationMs": 700,
+        "easing": "smooth"
+       },
+       "z": 2
+      },
+      {
+       "type": "text",
+       "x": 1020,
+       "y": 160,
+       "w": 780,
+       "h": 200,
+       "rotation": 0,
+       "content": {
+        "text": "Headline"
+       },
+       "style": {
+        "fontSize": 104,
+        "fontWeight": 800,
+        "align": "left",
+        "valign": "top"
+       },
+       "animation": {
+        "in": "slide-left",
+        "loop": "none",
+        "out": "none",
+        "delayMs": 100,
+        "durationMs": 700,
+        "easing": "smooth"
+       },
+       "z": 3
+      },
+      {
+       "type": "text",
+       "x": 1020,
+       "y": 400,
+       "w": 780,
+       "h": 520,
+       "rotation": 0,
+       "content": {
+        "text": "Add a few sentences about the picture. Keep it short and big."
+       },
+       "style": {
+        "fontSize": 54,
+        "fontWeight": 500,
+        "align": "left",
+        "valign": "top",
+        "color": "var(--muted)",
+        "fontFamily": "var(--font-body)",
+        "lineHeight": 1.4
+       },
+       "animation": {
+        "in": "fade",
+        "loop": "none",
+        "out": "none",
+        "delayMs": 400,
+        "durationMs": 900,
+        "easing": "smooth"
+       },
+       "z": 4
+      }
+     ]
+    },
+    {
+     "name": "Scripture",
+     "durationSec": 12,
+     "background": {
+      "type": "color",
+      "value": ""
+     },
+     "elements": [
+      {
+       "type": "text",
+       "x": 200,
+       "y": 120,
+       "w": 1520,
+       "h": 80,
+       "rotation": 0,
+       "content": {
+        "text": "SCRIPTURE"
+       },
+       "style": {
+        "fontSize": 40,
+        "fontWeight": 700,
+        "align": "center",
+        "valign": "top",
+        "color": "var(--accent)",
+        "fontFamily": "var(--font-body)",
+        "letterSpacing": 10
+       },
+       "z": 1
+      },
+      {
+       "type": "text",
+       "x": 200,
+       "y": 220,
+       "w": 1520,
+       "h": 560,
+       "rotation": 0,
+       "content": {
+        "text": "For God so loved the world that he gave his one and only Son."
+       },
+       "style": {
+        "fontSize": 88,
+        "fontWeight": 500,
+        "align": "center",
+        "valign": "middle",
+        "lineHeight": 1.3,
+        "fontFamily": "\"Playfair Display\", Georgia, serif"
+       },
+       "animation": {
+        "in": "fade",
+        "loop": "none",
+        "out": "none",
+        "delayMs": 100,
+        "durationMs": 1200,
+        "easing": "smooth"
+       },
+       "z": 2
+      },
+      {
+       "type": "shape",
+       "x": 860,
+       "y": 810,
+       "w": 200,
+       "h": 6,
+       "rotation": 0,
+       "content": {},
+       "style": {
+        "fill": "var(--accent)",
+        "radius": 3
+       },
+       "animation": {
+        "in": "slide-right",
+        "loop": "none",
+        "out": "none",
+        "delayMs": 700,
+        "durationMs": 600,
+        "easing": "smooth"
+       },
+       "z": 3
+      },
+      {
+       "type": "text",
+       "x": 200,
+       "y": 840,
+       "w": 1520,
+       "h": 100,
+       "rotation": 0,
+       "content": {
+        "text": "John 3:16"
+       },
+       "style": {
+        "fontSize": 54,
+        "fontWeight": 700,
+        "align": "center",
+        "valign": "top",
+        "color": "var(--accent)",
+        "fontFamily": "var(--font-body)"
+       },
+       "animation": {
+        "in": "fade",
+        "loop": "none",
+        "out": "none",
+        "delayMs": 900,
+        "durationMs": 800,
+        "easing": "smooth"
+       },
+       "z": 4
+      }
+     ]
+    }
+   ],
+   "transition": {
+    "type": "fade",
+    "durationMs": 500
+   }
+  }
+ },
+ {
+  "id": "scripture-verse",
+  "name": "Scripture Verse",
+  "category": "Presentation",
+  "description": "One large, calm verse slide with the reference underneath.",
+  "deck": {
+   "theme": "church",
+   "mode": "manual",
+   "aspect": "16:9",
+   "defaultDurationSec": 12,
+   "screens": [
+    {
+     "name": "Verse",
+     "durationSec": 12,
+     "background": {
+      "type": "color",
+      "value": ""
+     },
+     "elements": [
+      {
+       "type": "shape",
+       "x": 0,
+       "y": 0,
+       "w": 1920,
+       "h": 14,
+       "rotation": 0,
+       "content": {},
+       "style": {
+        "fill": "var(--accent)",
+        "radius": 0
+       },
+       "z": 1
+      },
+      {
+       "type": "text",
+       "x": 200,
+       "y": 130,
+       "w": 1520,
+       "h": 70,
+       "rotation": 0,
+       "content": {
+        "text": "TODAY'S VERSE"
+       },
+       "style": {
+        "fontSize": 40,
+        "fontWeight": 700,
+        "align": "center",
+        "valign": "top",
+        "color": "var(--accent)",
+        "fontFamily": "var(--font-body)",
+        "letterSpacing": 10
+       },
+       "animation": {
+        "in": "fade",
+        "loop": "none",
+        "out": "none",
+        "delayMs": 0,
+        "durationMs": 800,
+        "easing": "smooth"
+       },
+       "z": 2
+      },
+      {
+       "type": "text",
+       "x": 200,
+       "y": 230,
+       "w": 1520,
+       "h": 520,
+       "rotation": 0,
+       "content": {
+        "text": "Be strong and courageous. Do not be afraid, for the Lord your God is with you wherever you go."
+       },
+       "style": {
+        "fontSize": 84,
+        "fontWeight": 500,
+        "align": "center",
+        "valign": "middle",
+        "lineHeight": 1.3,
+        "fontFamily": "\"Playfair Display\", Georgia, serif"
+       },
+       "animation": {
+        "in": "fade",
+        "loop": "none",
+        "out": "none",
+        "delayMs": 200,
+        "durationMs": 1400,
+        "easing": "smooth"
+       },
+       "z": 3
+      },
+      {
+       "type": "shape",
+       "x": 860,
+       "y": 790,
+       "w": 200,
+       "h": 6,
+       "rotation": 0,
+       "content": {},
+       "style": {
+        "fill": "var(--accent)",
+        "radius": 3
+       },
+       "animation": {
+        "in": "slide-right",
+        "loop": "none",
+        "out": "none",
+        "delayMs": 900,
+        "durationMs": 600,
+        "easing": "smooth"
+       },
+       "z": 4
+      },
+      {
+       "type": "text",
+       "x": 200,
+       "y": 830,
+       "w": 1520,
+       "h": 100,
+       "rotation": 0,
+       "content": {
+        "text": "Joshua 1:9"
+       },
+       "style": {
+        "fontSize": 56,
+        "fontWeight": 700,
+        "align": "center",
+        "valign": "top",
+        "color": "var(--accent)",
+        "fontFamily": "var(--font-body)"
+       },
+       "animation": {
+        "in": "fade",
+        "loop": "none",
+        "out": "none",
+        "delayMs": 1100,
+        "durationMs": 800,
+        "easing": "smooth"
+       },
+       "z": 5
+      }
+     ]
+    }
+   ]
+  }
+ },
+ {
+  "id": "youth-night",
+  "name": "Youth Night (4 screens)",
+  "category": "Youth group",
+  "description": "Welcome with a countdown, game scoreboard, event schedule, and prayer requests. Move between screens with the arrow keys.",
+  "deck": {
+   "theme": "youth",
+   "mode": "manual",
+   "aspect": "16:9",
+   "defaultDurationSec": 12,
+   "screens": [
+    {
+     "name": "Welcome",
+     "durationSec": 12,
+     "background": {
+      "type": "animated",
+      "value": "",
+      "kind": "particles",
+      "base": "var(--bg)",
+      "accent": "var(--accent)",
+      "accent2": "var(--muted)",
+      "speed": "slow"
+     },
+     "elements": [
+      {
+       "type": "text",
+       "x": 120,
+       "y": 100,
+       "w": 1680,
+       "h": 220,
+       "rotation": 0,
+       "content": {
+        "text": "Welcome to Youth Night!"
+       },
+       "style": {
+        "fontSize": 138,
+        "fontWeight": 800,
+        "align": "center",
+        "valign": "middle"
+       },
+       "animation": {
+        "in": "slide-down",
+        "loop": "none",
+        "out": "none",
+        "delayMs": 0,
+        "durationMs": 800,
+        "easing": "smooth"
+       },
+       "z": 1
+      },
+      {
+       "type": "text",
+       "x": 120,
+       "y": 360,
+       "w": 1680,
+       "h": 90,
+       "rotation": 0,
+       "content": {
+        "text": "Starting in"
+       },
+       "style": {
+        "fontSize": 58,
+        "fontWeight": 600,
+        "align": "center",
+        "valign": "top",
+        "color": "var(--muted)",
+        "fontFamily": "var(--font-body)"
+       },
+       "animation": {
+        "in": "fade",
+        "loop": "none",
+        "out": "none",
+        "delayMs": 400,
+        "durationMs": 800,
+        "easing": "smooth"
+       },
+       "z": 2
+      },
+      {
+       "type": "timer",
+       "x": 260,
+       "y": 450,
+       "w": 1400,
+       "h": 330,
+       "rotation": 0,
+       "content": {
+        "mode": "until",
+        "target": "@evening",
+        "repeat": "weekly",
+        "durationSec": 600,
+        "format": "auto",
+        "onZero": "message",
+        "message": "Let's go!",
+        "holdSec": 60,
+        "beep": false
+       },
+       "style": {
+        "fontSize": 280,
+        "fontWeight": 800,
+        "align": "center",
+        "valign": "middle"
+       },
+       "animation": {
+        "in": "zoom",
+        "loop": "none",
+        "out": "none",
+        "delayMs": 600,
+        "durationMs": 800,
+        "easing": "smooth"
+       },
+       "z": 3
+      },
+      {
+       "type": "text",
+       "x": 120,
+       "y": 850,
+       "w": 1680,
+       "h": 100,
+       "rotation": 0,
+       "content": {
+        "text": "Wednesdays  •  6:30 PM  •  Room 110"
+       },
+       "style": {
+        "fontSize": 56,
+        "fontWeight": 700,
+        "align": "center",
+        "valign": "top",
+        "color": "var(--accent)",
+        "fontFamily": "var(--font-body)"
+       },
+       "animation": {
+        "in": "fade",
+        "loop": "none",
+        "out": "none",
+        "delayMs": 1000,
+        "durationMs": 800,
+        "easing": "smooth"
+       },
+       "z": 4
+      }
+     ]
+    },
+    {
+     "name": "Game scoreboard",
+     "durationSec": 12,
+     "background": {
+      "type": "color",
+      "value": ""
+     },
+     "elements": [
+      {
+       "type": "text",
+       "x": 120,
+       "y": 70,
+       "w": 1680,
+       "h": 160,
+       "rotation": 0,
+       "content": {
+        "text": "Game Time"
+       },
+       "style": {
+        "fontSize": 120,
+        "fontWeight": 800,
+        "align": "center",
+        "valign": "middle"
+       },
+       "animation": {
+        "in": "slide-down",
+        "loop": "none",
+        "out": "none",
+        "delayMs": 0,
+        "durationMs": 700,
+        "easing": "smooth"
+       },
+       "z": 1
+      },
+      {
+       "type": "scoreboard",
+       "x": 120,
+       "y": 260,
+       "w": 1680,
+       "h": 650,
+       "rotation": 0,
+       "content": {
+        "teams": [
+         "Team 1",
+         "Team 2",
+         "Team 3",
+         "Team 4"
+        ]
+       },
+       "style": {
+        "fontSize": 190
+       },
+       "z": 2
+      }
+     ]
+    },
+    {
+     "name": "Schedule",
+     "durationSec": 12,
+     "background": {
+      "type": "color",
+      "value": ""
+     },
+     "elements": [
+      {
+       "type": "text",
+       "x": 120,
+       "y": 70,
+       "w": 1680,
+       "h": 160,
+       "rotation": 0,
+       "content": {
+        "text": "Tonight's Schedule"
+       },
+       "style": {
+        "fontSize": 112,
+        "fontWeight": 800,
+        "align": "left",
+        "valign": "top"
+       },
+       "animation": {
+        "in": "slide-right",
+        "loop": "none",
+        "out": "none",
+        "delayMs": 0,
+        "durationMs": 700,
+        "easing": "smooth"
+       },
+       "z": 1
+      },
+      {
+       "type": "shape",
+       "x": 120,
+       "y": 260,
+       "w": 1680,
+       "h": 680,
+       "rotation": 0,
+       "content": {},
+       "style": {
+        "fill": "var(--card)",
+        "radius": 44
+       },
+       "animation": {
+        "in": "fade",
+        "loop": "none",
+        "out": "none",
+        "delayMs": 200,
+        "durationMs": 700,
+        "easing": "smooth"
+       },
+       "z": 2
+      },
+      {
+       "type": "text",
+       "x": 190,
+       "y": 300,
+       "w": 360,
+       "h": 600,
+       "rotation": 0,
+       "content": {
+        "text": "6:30\n7:00\n7:30\n8:15\n8:45"
+       },
+       "style": {
+        "fontSize": 62,
+        "fontWeight": 800,
+        "align": "left",
+        "valign": "top",
+        "color": "var(--accent)",
+        "fontFamily": "var(--font-body)",
+        "lineHeight": 2.0
+       },
+       "animation": {
+        "in": "fade",
+        "loop": "none",
+        "out": "none",
+        "delayMs": 400,
+        "durationMs": 800,
+        "easing": "smooth"
+       },
+       "z": 3
+      },
+      {
+       "type": "text",
+       "x": 580,
+       "y": 300,
+       "w": 1180,
+       "h": 600,
+       "rotation": 0,
+       "content": {
+        "text": "Welcome and games\nWorship\nMessage\nSmall groups\nSnacks and hangout"
+       },
+       "style": {
+        "fontSize": 62,
+        "fontWeight": 600,
+        "align": "left",
+        "valign": "top",
+        "fontFamily": "var(--font-body)",
+        "lineHeight": 2.0
+       },
+       "animation": {
+        "in": "fade",
+        "loop": "none",
+        "out": "none",
+        "delayMs": 500,
+        "durationMs": 800,
+        "easing": "smooth"
+       },
+       "z": 4
+      }
+     ]
+    },
+    {
+     "name": "Prayer requests",
+     "durationSec": 12,
+     "background": {
+      "type": "color",
+      "value": ""
+     },
+     "elements": [
+      {
+       "type": "text",
+       "x": 120,
+       "y": 70,
+       "w": 1680,
+       "h": 160,
+       "rotation": 0,
+       "content": {
+        "text": "Prayer Requests"
+       },
+       "style": {
+        "fontSize": 112,
+        "fontWeight": 800,
+        "align": "left",
+        "valign": "top"
+       },
+       "animation": {
+        "in": "slide-right",
+        "loop": "none",
+        "out": "none",
+        "delayMs": 0,
+        "durationMs": 700,
+        "easing": "smooth"
+       },
+       "z": 1
+      },
+      {
+       "type": "shape",
+       "x": 120,
+       "y": 260,
+       "w": 1680,
+       "h": 560,
+       "rotation": 0,
+       "content": {},
+       "style": {
+        "fill": "var(--card)",
+        "radius": 44
+       },
+       "animation": {
+        "in": "fade",
+        "loop": "none",
+        "out": "none",
+        "delayMs": 200,
+        "durationMs": 700,
+        "easing": "smooth"
+       },
+       "z": 2
+      },
+      {
+       "type": "text",
+       "x": 190,
+       "y": 300,
+       "w": 1560,
+       "h": 480,
+       "rotation": 0,
+       "content": {
+        "text": "•  Add a request here\n•  Add another request here\n•  And one more"
+       },
+       "style": {
+        "fontSize": 64,
+        "fontWeight": 500,
+        "align": "left",
+        "valign": "top",
+        "fontFamily": "var(--font-body)",
+        "lineHeight": 1.7
+       },
+       "animation": {
+        "in": "fade",
+        "loop": "none",
+        "out": "none",
+        "delayMs": 400,
+        "durationMs": 900,
+        "easing": "smooth"
+       },
+       "z": 3
+      },
+      {
+       "type": "text",
+       "x": 120,
+       "y": 860,
+       "w": 1680,
+       "h": 90,
+       "rotation": 0,
+       "content": {
+        "text": "Write yours on a card at the door"
+       },
+       "style": {
+        "fontSize": 50,
+        "fontWeight": 600,
+        "align": "center",
+        "valign": "top",
+        "color": "var(--accent)",
+        "fontFamily": "var(--font-body)"
+       },
+       "animation": {
+        "in": "fade",
+        "loop": "none",
+        "out": "none",
+        "delayMs": 900,
+        "durationMs": 700,
+        "easing": "smooth"
+       },
+       "z": 4
+      }
+     ]
+    }
+   ],
+   "transition": {
+    "type": "push",
+    "durationMs": 600
+   }
+  }
+ },
+ {
+  "id": "game-scoreboard",
+  "name": "Game Night Scoreboard",
+  "category": "Youth group",
+  "description": "Big team scores with a 10-minute game timer. In Show mode press 1-4 for points, T to start the timer.",
+  "deck": {
+   "theme": "neon",
+   "mode": "manual",
+   "aspect": "16:9",
+   "defaultDurationSec": 12,
+   "screens": [
+    {
+     "name": "Scoreboard",
+     "durationSec": 12,
+     "background": {
+      "type": "color",
+      "value": ""
+     },
+     "elements": [
+      {
+       "type": "text",
+       "x": 120,
+       "y": 60,
+       "w": 1000,
+       "h": 170,
+       "rotation": 0,
+       "content": {
+        "text": "Game Night"
+       },
+       "style": {
+        "fontSize": 120,
+        "fontWeight": 800,
+        "align": "left",
+        "valign": "middle"
+       },
+       "animation": {
+        "in": "slide-right",
+        "loop": "none",
+        "out": "none",
+        "delayMs": 0,
+        "durationMs": 700,
+        "easing": "smooth"
+       },
+       "z": 1
+      },
+      {
+       "type": "timer",
+       "x": 1180,
+       "y": 60,
+       "w": 640,
+       "h": 170,
+       "rotation": 0,
+       "content": {
+        "mode": "duration",
+        "target": "@evening",
+        "repeat": "none",
+        "durationSec": 600,
+        "format": "ms",
+        "onZero": "flash",
+        "message": "",
+        "holdSec": 60,
+        "beep": false
+       },
+       "style": {
+        "fontSize": 140,
+        "fontWeight": 800,
+        "align": "center",
+        "valign": "middle",
+        "color": "var(--accent)"
+       },
+       "animation": {
+        "in": "fade",
+        "loop": "none",
+        "out": "none",
+        "delayMs": 200,
+        "durationMs": 700,
+        "easing": "smooth"
+       },
+       "z": 2
+      },
+      {
+       "type": "scoreboard",
+       "x": 120,
+       "y": 290,
+       "w": 1680,
+       "h": 650,
+       "rotation": 0,
+       "content": {
+        "teams": [
+         "Red",
+         "Blue",
+         "Green",
+         "Gold"
+        ]
+       },
+       "style": {
+        "fontSize": 230
+       },
+       "z": 3
+      }
+     ]
+    }
+   ]
+  }
+ },
+ {
+  "id": "info-board",
+  "name": "TV Info Board",
+  "category": "TV info board",
+  "description": "Multi-zone board: clock and date, announcements, schedule, weather block, and a scrolling ticker.",
+  "deck": {
+   "theme": "slate",
+   "mode": "loop",
+   "aspect": "16:9",
+   "defaultDurationSec": 12,
+   "screens": [
+    {
+     "name": "Board",
+     "durationSec": 20,
+     "background": {
+      "type": "color",
+      "value": ""
+     },
+     "elements": [
+      {
+       "type": "shape",
+       "x": 0,
+       "y": 0,
+       "w": 1920,
+       "h": 180,
+       "rotation": 0,
+       "content": {},
+       "style": {
+        "fill": "var(--card)",
+        "radius": 0
+       },
+       "z": 1
+      },
+      {
+       "type": "text",
+       "x": 80,
+       "y": 25,
+       "w": 1100,
+       "h": 130,
+       "rotation": 0,
+       "content": {
+        "text": "Welcome"
+       },
+       "style": {
+        "fontSize": 96,
+        "fontWeight": 800,
+        "align": "left",
+        "valign": "middle"
+       },
+       "animation": {
+        "in": "slide-right",
+        "loop": "none",
+        "out": "none",
+        "delayMs": 0,
+        "durationMs": 700,
+        "easing": "smooth"
+       },
+       "z": 2
+      },
+      {
+       "type": "clock",
+       "x": 1180,
+       "y": 18,
+       "w": 660,
+       "h": 110,
+       "rotation": 0,
+       "content": {
+        "kind": "digital",
+        "hour12": true,
+        "seconds": false,
+        "showAmPm": true,
+        "timeZone": "",
+        "dateFormat": "full",
+        "face": "classic",
+        "secondHand": true
+       },
+       "style": {
+        "fontSize": 100,
+        "fontWeight": 700,
+        "align": "right",
+        "valign": "middle"
+       },
+       "animation": {
+        "in": "fade",
+        "loop": "none",
+        "out": "none",
+        "delayMs": 200,
+        "durationMs": 700,
+        "easing": "smooth"
+       },
+       "z": 3
+      },
+      {
+       "type": "clock",
+       "x": 1180,
+       "y": 120,
+       "w": 660,
+       "h": 50,
+       "rotation": 0,
+       "content": {
+        "kind": "date",
+        "hour12": true,
+        "seconds": false,
+        "showAmPm": true,
+        "timeZone": "",
+        "dateFormat": "full",
+        "face": "classic",
+        "secondHand": true
+       },
+       "style": {
+        "fontSize": 34,
+        "fontWeight": 500,
+        "align": "right",
+        "valign": "middle",
+        "color": "var(--muted)"
+       },
+       "animation": {
+        "in": "fade",
+        "loop": "none",
+        "out": "none",
+        "delayMs": 300,
+        "durationMs": 700,
+        "easing": "smooth"
+       },
+       "z": 4
+      },
+      {
+       "type": "shape",
+       "x": 60,
+       "y": 215,
+       "w": 1000,
+       "h": 700,
+       "rotation": 0,
+       "content": {},
+       "style": {
+        "fill": "var(--card)",
+        "radius": 36
+       },
+       "animation": {
+        "in": "fade",
+        "loop": "none",
+        "out": "none",
+        "delayMs": 200,
+        "durationMs": 700,
+        "easing": "smooth"
+       },
+       "z": 5
+      },
+      {
+       "type": "text",
+       "x": 110,
+       "y": 245,
+       "w": 900,
+       "h": 80,
+       "rotation": 0,
+       "content": {
+        "text": "Announcements"
+       },
+       "style": {
+        "fontSize": 56,
+        "fontWeight": 800,
+        "align": "left",
+        "valign": "top",
+        "color": "var(--accent)",
+        "fontFamily": "var(--font-body)"
+       },
+       "animation": {
+        "in": "fade",
+        "loop": "none",
+        "out": "none",
+        "delayMs": 300,
+        "durationMs": 700,
+        "easing": "smooth"
+       },
+       "z": 6
+      },
+      {
+       "type": "text",
+       "x": 110,
+       "y": 340,
+       "w": 920,
+       "h": 540,
+       "rotation": 0,
+       "content": {
+        "text": "•  Youth night is Wednesday at 6:30\n•  Food drive boxes by the front door\n•  New to us? Ask at the welcome desk"
+       },
+       "style": {
+        "fontSize": 48,
+        "fontWeight": 500,
+        "align": "left",
+        "valign": "top",
+        "fontFamily": "var(--font-body)",
+        "lineHeight": 1.55
+       },
+       "animation": {
+        "in": "fade",
+        "loop": "none",
+        "out": "none",
+        "delayMs": 500,
+        "durationMs": 900,
+        "easing": "smooth"
+       },
+       "z": 7
+      },
+      {
+       "type": "shape",
+       "x": 1100,
+       "y": 215,
+       "w": 760,
+       "h": 360,
+       "rotation": 0,
+       "content": {},
+       "style": {
+        "fill": "var(--card)",
+        "radius": 36
+       },
+       "animation": {
+        "in": "fade",
+        "loop": "none",
+        "out": "none",
+        "delayMs": 300,
+        "durationMs": 700,
+        "easing": "smooth"
+       },
+       "z": 8
+      },
+      {
+       "type": "text",
+       "x": 1150,
+       "y": 245,
+       "w": 660,
+       "h": 80,
+       "rotation": 0,
+       "content": {
+        "text": "Today's Schedule"
+       },
+       "style": {
+        "fontSize": 56,
+        "fontWeight": 800,
+        "align": "left",
+        "valign": "top",
+        "color": "var(--accent)",
+        "fontFamily": "var(--font-body)"
+       },
+       "animation": {
+        "in": "fade",
+        "loop": "none",
+        "out": "none",
+        "delayMs": 400,
+        "durationMs": 700,
+        "easing": "smooth"
+       },
+       "z": 9
+      },
+      {
+       "type": "text",
+       "x": 1150,
+       "y": 340,
+       "w": 180,
+       "h": 210,
+       "rotation": 0,
+       "content": {
+        "text": "9:00\n10:30\n12:00"
+       },
+       "style": {
+        "fontSize": 44,
+        "fontWeight": 800,
+        "align": "left",
+        "valign": "top",
+        "fontFamily": "var(--font-body)",
+        "lineHeight": 1.6
+       },
+       "animation": {
+        "in": "fade",
+        "loop": "none",
+        "out": "none",
+        "delayMs": 600,
+        "durationMs": 700,
+        "easing": "smooth"
+       },
+       "z": 10
+      },
+      {
+       "type": "text",
+       "x": 1340,
+       "y": 340,
+       "w": 480,
+       "h": 210,
+       "rotation": 0,
+       "content": {
+        "text": "Service\nBible study\nLunch"
+       },
+       "style": {
+        "fontSize": 44,
+        "fontWeight": 500,
+        "align": "left",
+        "valign": "top",
+        "fontFamily": "var(--font-body)",
+        "lineHeight": 1.6
+       },
+       "animation": {
+        "in": "fade",
+        "loop": "none",
+        "out": "none",
+        "delayMs": 700,
+        "durationMs": 700,
+        "easing": "smooth"
+       },
+       "z": 11
+      },
+      {
+       "type": "shape",
+       "x": 1100,
+       "y": 605,
+       "w": 760,
+       "h": 310,
+       "rotation": 0,
+       "content": {},
+       "style": {
+        "fill": "var(--card)",
+        "radius": 36
+       },
+       "animation": {
+        "in": "fade",
+        "loop": "none",
+        "out": "none",
+        "delayMs": 400,
+        "durationMs": 700,
+        "easing": "smooth"
+       },
+       "z": 12
+      },
+      {
+       "type": "text",
+       "x": 1150,
+       "y": 635,
+       "w": 660,
+       "h": 80,
+       "rotation": 0,
+       "content": {
+        "text": "Weather"
+       },
+       "style": {
+        "fontSize": 56,
+        "fontWeight": 800,
+        "align": "left",
+        "valign": "top",
+        "color": "var(--accent)",
+        "fontFamily": "var(--font-body)"
+       },
+       "animation": {
+        "in": "fade",
+        "loop": "none",
+        "out": "none",
+        "delayMs": 500,
+        "durationMs": 700,
+        "easing": "smooth"
+       },
+       "z": 13
+      },
+      {
+       "type": "text",
+       "x": 1150,
+       "y": 720,
+       "w": 300,
+       "h": 170,
+       "rotation": 0,
+       "content": {
+        "text": "72°"
+       },
+       "style": {
+        "fontSize": 130,
+        "fontWeight": 800,
+        "align": "left",
+        "valign": "middle"
+       },
+       "animation": {
+        "in": "zoom",
+        "loop": "none",
+        "out": "none",
+        "delayMs": 700,
+        "durationMs": 700,
+        "easing": "smooth"
+       },
+       "z": 14
+      },
+      {
+       "type": "text",
+       "x": 1470,
+       "y": 740,
+       "w": 350,
+       "h": 130,
+       "rotation": 0,
+       "content": {
+        "text": "Sunny\nand clear"
+       },
+       "style": {
+        "fontSize": 44,
+        "fontWeight": 500,
+        "align": "left",
+        "valign": "middle",
+        "color": "var(--muted)",
+        "fontFamily": "var(--font-body)",
+        "lineHeight": 1.3
+       },
+       "animation": {
+        "in": "fade",
+        "loop": "none",
+        "out": "none",
+        "delayMs": 800,
+        "durationMs": 700,
+        "easing": "smooth"
+       },
+       "z": 15
+      },
+      {
+       "type": "ticker",
+       "x": 0,
+       "y": 950,
+       "w": 1920,
+       "h": 130,
+       "rotation": 0,
+       "content": {
+        "messages": [
+         "Welcome!",
+         "Nursery is open during every service",
+         "Follow us online for updates"
+        ],
+        "speed": 150,
+        "direction": "left",
+        "separator": "•"
+       },
+       "style": {
+        "variant": "solid",
+        "fontSize": 54,
+        "fontWeight": 700
+       },
+       "z": 16
+      }
+     ]
+    }
+   ]
+  }
+ },
+ {
+  "id": "lobby-board",
+  "name": "Lobby Welcome Board",
+  "category": "TV info board",
+  "description": "Welcome message, opening hours, an analog clock, a Wi-Fi code, and a ticker.",
+  "deck": {
+   "theme": "sand",
+   "mode": "loop",
+   "aspect": "16:9",
+   "defaultDurationSec": 12,
+   "screens": [
+    {
+     "name": "Lobby",
+     "durationSec": 20,
+     "background": {
+      "type": "color",
+      "value": ""
+     },
+     "elements": [
+      {
+       "type": "text",
+       "x": 100,
+       "y": 70,
+       "w": 1050,
+       "h": 190,
+       "rotation": 0,
+       "content": {
+        "text": "Welcome"
+       },
+       "style": {
+        "fontSize": 160,
+        "fontWeight": 800,
+        "align": "left",
+        "valign": "middle"
+       },
+       "animation": {
+        "in": "slide-right",
+        "loop": "none",
+        "out": "none",
+        "delayMs": 0,
+        "durationMs": 700,
+        "easing": "smooth"
+       },
+       "z": 1
+      },
+      {
+       "type": "text",
+       "x": 100,
+       "y": 265,
+       "w": 1050,
+       "h": 90,
+       "rotation": 0,
+       "content": {
+        "text": "We're glad you're here."
+       },
+       "style": {
+        "fontSize": 54,
+        "fontWeight": 500,
+        "align": "left",
+        "valign": "top",
+        "color": "var(--muted)",
+        "fontFamily": "var(--font-body)"
+       },
+       "animation": {
+        "in": "fade",
+        "loop": "none",
+        "out": "none",
+        "delayMs": 300,
+        "durationMs": 700,
+        "easing": "smooth"
+       },
+       "z": 2
+      },
+      {
+       "type": "shape",
+       "x": 100,
+       "y": 400,
+       "w": 1050,
+       "h": 500,
+       "rotation": 0,
+       "content": {},
+       "style": {
+        "fill": "var(--card)",
+        "radius": 40
+       },
+       "animation": {
+        "in": "fade",
+        "loop": "none",
+        "out": "none",
+        "delayMs": 300,
+        "durationMs": 700,
+        "easing": "smooth"
+       },
+       "z": 3
+      },
+      {
+       "type": "text",
+       "x": 150,
+       "y": 430,
+       "w": 700,
+       "h": 80,
+       "rotation": 0,
+       "content": {
+        "text": "Hours"
+       },
+       "style": {
+        "fontSize": 56,
+        "fontWeight": 800,
+        "align": "left",
+        "valign": "top",
+        "color": "var(--accent)",
+        "fontFamily": "var(--font-body)"
+       },
+       "z": 4
+      },
+      {
+       "type": "text",
+       "x": 150,
+       "y": 530,
+       "w": 420,
+       "h": 340,
+       "rotation": 0,
+       "content": {
+        "text": "Mon – Fri\nSaturday\nSunday"
+       },
+       "style": {
+        "fontSize": 50,
+        "fontWeight": 700,
+        "align": "left",
+        "valign": "top",
+        "fontFamily": "var(--font-body)",
+        "lineHeight": 1.7
+       },
+       "animation": {
+        "in": "fade",
+        "loop": "none",
+        "out": "none",
+        "delayMs": 500,
+        "durationMs": 700,
+        "easing": "smooth"
+       },
+       "z": 5
+      },
+      {
+       "type": "text",
+       "x": 600,
+       "y": 530,
+       "w": 520,
+       "h": 340,
+       "rotation": 0,
+       "content": {
+        "text": "9 AM – 5 PM\n10 AM – 2 PM\nService only"
+       },
+       "style": {
+        "fontSize": 50,
+        "fontWeight": 500,
+        "align": "left",
+        "valign": "top",
+        "color": "var(--muted)",
+        "fontFamily": "var(--font-body)",
+        "lineHeight": 1.7
+       },
+       "animation": {
+        "in": "fade",
+        "loop": "none",
+        "out": "none",
+        "delayMs": 600,
+        "durationMs": 700,
+        "easing": "smooth"
+       },
+       "z": 6
+      },
+      {
+       "type": "clock",
+       "x": 1250,
+       "y": 100,
+       "w": 520,
+       "h": 520,
+       "rotation": 0,
+       "content": {
+        "kind": "analog",
+        "hour12": true,
+        "seconds": false,
+        "showAmPm": true,
+        "timeZone": "",
+        "dateFormat": "full",
+        "face": "classic",
+        "secondHand": true
+       },
+       "style": {
+        "fontSize": 100,
+        "fontWeight": 700,
+        "align": "center",
+        "valign": "middle"
+       },
+       "animation": {
+        "in": "zoom",
+        "loop": "none",
+        "out": "none",
+        "delayMs": 400,
+        "durationMs": 900,
+        "easing": "smooth"
+       },
+       "z": 7
+      },
+      {
+       "type": "shape",
+       "x": 1230,
+       "y": 660,
+       "w": 580,
+       "h": 260,
+       "rotation": 0,
+       "content": {},
+       "style": {
+        "fill": "var(--card)",
+        "radius": 36
+       },
+       "animation": {
+        "in": "fade",
+        "loop": "none",
+        "out": "none",
+        "delayMs": 600,
+        "durationMs": 700,
+        "easing": "smooth"
+       },
+       "z": 8
+      },
+      {
+       "type": "qr",
+       "x": 1255,
+       "y": 690,
+       "w": 200,
+       "h": 200,
+       "rotation": 0,
+       "content": {
+        "text": "WIFI:T:WPA;S:Guest;P:welcome;;",
+        "ecl": "M"
+       },
+       "style": {
+        "fg": "#000000",
+        "bg": "#ffffff",
+        "radius": 12
+       },
+       "animation": {
+        "in": "fade",
+        "loop": "none",
+        "out": "none",
+        "delayMs": 700,
+        "durationMs": 700,
+        "easing": "smooth"
+       },
+       "z": 9
+      },
+      {
+       "type": "text",
+       "x": 1472,
+       "y": 690,
+       "w": 340,
+       "h": 200,
+       "rotation": 0,
+       "content": {
+        "text": "Free Wi-Fi\nNetwork: Guest\nPassword: welcome"
+       },
+       "style": {
+        "fontSize": 31,
+        "fontWeight": 600,
+        "align": "left",
+        "valign": "middle",
+        "fontFamily": "var(--font-body)",
+        "lineHeight": 1.45
+       },
+       "animation": {
+        "in": "fade",
+        "loop": "none",
+        "out": "none",
+        "delayMs": 800,
+        "durationMs": 700,
+        "easing": "smooth"
+       },
+       "z": 10
+      },
+      {
+       "type": "ticker",
+       "x": 0,
+       "y": 950,
+       "w": 1920,
+       "h": 130,
+       "rotation": 0,
+       "content": {
+        "messages": [
+         "Restrooms are down the main hall",
+         "Coffee is free — help yourself",
+         "Ask anyone with a name tag"
+        ],
+        "speed": 150,
+        "direction": "left",
+        "separator": "•"
+       },
+       "style": {
+        "variant": "solid",
+        "fontSize": 54,
+        "fontWeight": 700
+       },
+       "z": 11
+      }
+     ]
+    }
+   ]
+  }
+ },
+ {
+  "id": "countdown-event",
+  "name": "Countdown to Event",
+  "category": "Countdown",
+  "description": "Big countdown that repeats every week, with an animated glow and a message at zero.",
+  "deck": {
+   "theme": "midnight",
+   "mode": "manual",
+   "aspect": "16:9",
+   "defaultDurationSec": 12,
+   "screens": [
+    {
+     "name": "Countdown",
+     "durationSec": 12,
+     "background": {
+      "type": "animated",
+      "value": "",
+      "kind": "aurora",
+      "base": "var(--bg)",
+      "accent": "var(--accent)",
+      "accent2": "var(--muted)",
+      "speed": "slow"
+     },
+     "elements": [
+      {
+       "type": "text",
+       "x": 120,
+       "y": 110,
+       "w": 1680,
+       "h": 200,
+       "rotation": 0,
+       "content": {
+        "text": "Youth Night"
+       },
+       "style": {
+        "fontSize": 160,
+        "fontWeight": 800,
+        "align": "center",
+        "valign": "middle"
+       },
+       "animation": {
+        "in": "slide-down",
+        "loop": "none",
+        "out": "none",
+        "delayMs": 0,
+        "durationMs": 800,
+        "easing": "smooth"
+       },
+       "z": 1
+      },
+      {
+       "type": "text",
+       "x": 120,
+       "y": 330,
+       "w": 1680,
+       "h": 90,
+       "rotation": 0,
+       "content": {
+        "text": "starts in"
+       },
+       "style": {
+        "fontSize": 58,
+        "fontWeight": 500,
+        "align": "center",
+        "valign": "top",
+        "color": "var(--muted)",
+        "fontFamily": "var(--font-body)"
+       },
+       "animation": {
+        "in": "fade",
+        "loop": "none",
+        "out": "none",
+        "delayMs": 300,
+        "durationMs": 800,
+        "easing": "smooth"
+       },
+       "z": 2
+      },
+      {
+       "type": "timer",
+       "x": 160,
+       "y": 440,
+       "w": 1600,
+       "h": 360,
+       "rotation": 0,
+       "content": {
+        "mode": "until",
+        "target": "@evening",
+        "repeat": "weekly",
+        "durationSec": 600,
+        "format": "auto",
+        "onZero": "message",
+        "message": "We're starting!",
+        "holdSec": 60,
+        "beep": false
+       },
+       "style": {
+        "fontSize": 340,
+        "fontWeight": 800,
+        "align": "center",
+        "valign": "middle"
+       },
+       "animation": {
+        "in": "zoom",
+        "loop": "none",
+        "out": "none",
+        "delayMs": 500,
+        "durationMs": 900,
+        "easing": "smooth"
+       },
+       "z": 3
+      },
+      {
+       "type": "text",
+       "x": 120,
+       "y": 850,
+       "w": 1680,
+       "h": 100,
+       "rotation": 0,
+       "content": {
+        "text": "Wednesdays at 6:30 PM"
+       },
+       "style": {
+        "fontSize": 58,
+        "fontWeight": 700,
+        "align": "center",
+        "valign": "top",
+        "color": "var(--accent)",
+        "fontFamily": "var(--font-body)"
+       },
+       "animation": {
+        "in": "fade",
+        "loop": "none",
+        "out": "none",
+        "delayMs": 900,
+        "durationMs": 700,
+        "easing": "smooth"
+       },
+       "z": 4
+      }
+     ]
+    }
+   ]
+  }
+ },
+ {
+  "id": "starting-soon",
+  "name": "Starting Soon (10 min)",
+  "category": "Countdown",
+  "description": "A 10-minute countdown for the pre-service screen. In Show mode press T to start it.",
+  "deck": {
+   "theme": "royal",
+   "mode": "manual",
+   "aspect": "16:9",
+   "defaultDurationSec": 12,
+   "screens": [
+    {
+     "name": "Starting soon",
+     "durationSec": 12,
+     "background": {
+      "type": "animated",
+      "value": "",
+      "kind": "particles",
+      "base": "var(--bg)",
+      "accent": "var(--accent)",
+      "accent2": "var(--muted)",
+      "speed": "slow"
+     },
+     "elements": [
+      {
+       "type": "text",
+       "x": 120,
+       "y": 190,
+       "w": 1680,
+       "h": 280,
+       "rotation": 0,
+       "content": {
+        "text": "Starting Soon"
+       },
+       "style": {
+        "fontSize": 200,
+        "fontWeight": 800,
+        "align": "center",
+        "valign": "middle"
+       },
+       "animation": {
+        "in": "slide-up",
+        "loop": "none",
+        "out": "none",
+        "delayMs": 0,
+        "durationMs": 900,
+        "easing": "smooth"
+       },
+       "z": 1
+      },
+      {
+       "type": "timer",
+       "x": 460,
+       "y": 500,
+       "w": 1000,
+       "h": 300,
+       "rotation": 0,
+       "content": {
+        "mode": "duration",
+        "target": "@evening",
+        "repeat": "none",
+        "durationSec": 600,
+        "format": "ms",
+        "onZero": "message",
+        "message": "Let's begin!",
+        "holdSec": 60,
+        "beep": false
+       },
+       "style": {
+        "fontSize": 230,
+        "fontWeight": 800,
+        "align": "center",
+        "valign": "middle"
+       },
+       "animation": {
+        "in": "fade",
+        "loop": "none",
+        "out": "none",
+        "delayMs": 500,
+        "durationMs": 900,
+        "easing": "smooth"
+       },
+       "z": 2
+      },
+      {
+       "type": "text",
+       "x": 120,
+       "y": 860,
+       "w": 1680,
+       "h": 90,
+       "rotation": 0,
+       "content": {
+        "text": "Please find a seat"
+       },
+       "style": {
+        "fontSize": 54,
+        "fontWeight": 500,
+        "align": "center",
+        "valign": "top",
+        "color": "var(--muted)",
+        "fontFamily": "var(--font-body)"
+       },
+       "animation": {
+        "in": "fade",
+        "loop": "none",
+        "out": "none",
+        "delayMs": 900,
+        "durationMs": 700,
+        "easing": "smooth"
+       },
+       "z": 3
+      }
+     ]
+    }
+   ]
+  }
+ },
+ {
+  "id": "doors-open",
+  "name": "Doors Open",
+  "category": "Countdown",
+  "description": "Clean countdown to when the doors open, with the time spelled out underneath.",
+  "deck": {
+   "theme": "clean",
+   "mode": "manual",
+   "aspect": "16:9",
+   "defaultDurationSec": 12,
+   "screens": [
+    {
+     "name": "Doors open",
+     "durationSec": 12,
+     "background": {
+      "type": "color",
+      "value": ""
+     },
+     "elements": [
+      {
+       "type": "shape",
+       "x": 0,
+       "y": 0,
+       "w": 40,
+       "h": 1080,
+       "rotation": 0,
+       "content": {},
+       "style": {
+        "fill": "var(--accent)",
+        "radius": 0
+       },
+       "z": 1
+      },
+      {
+       "type": "text",
+       "x": 160,
+       "y": 160,
+       "w": 1000,
+       "h": 130,
+       "rotation": 0,
+       "content": {
+        "text": "Doors open in"
+       },
+       "style": {
+        "fontSize": 78,
+        "fontWeight": 700,
+        "align": "left",
+        "valign": "top",
+        "color": "var(--muted)",
+        "fontFamily": "var(--font-body)"
+       },
+       "animation": {
+        "in": "slide-right",
+        "loop": "none",
+        "out": "none",
+        "delayMs": 0,
+        "durationMs": 700,
+        "easing": "smooth"
+       },
+       "z": 2
+      },
+      {
+       "type": "timer",
+       "x": 140,
+       "y": 290,
+       "w": 1620,
+       "h": 420,
+       "rotation": 0,
+       "content": {
+        "mode": "until",
+        "target": "@evening",
+        "repeat": "none",
+        "durationSec": 600,
+        "format": "auto",
+        "onZero": "message",
+        "message": "Doors are open!",
+        "holdSec": 600,
+        "beep": false
+       },
+       "style": {
+        "fontSize": 330,
+        "fontWeight": 800,
+        "align": "center",
+        "valign": "middle"
+       },
+       "animation": {
+        "in": "fade",
+        "loop": "none",
+        "out": "none",
+        "delayMs": 300,
+        "durationMs": 900,
+        "easing": "smooth"
+       },
+       "z": 3
+      },
+      {
+       "type": "shape",
+       "x": 160,
+       "y": 760,
+       "w": 760,
+       "h": 110,
+       "rotation": 0,
+       "content": {},
+       "style": {
+        "fill": "var(--card)",
+        "radius": 55
+       },
+       "animation": {
+        "in": "fade",
+        "loop": "none",
+        "out": "none",
+        "delayMs": 700,
+        "durationMs": 700,
+        "easing": "smooth"
+       },
+       "z": 4
+      },
+      {
+       "type": "text",
+       "x": 160,
+       "y": 760,
+       "w": 760,
+       "h": 110,
+       "rotation": 0,
+       "content": {
+        "text": "Doors open at 6:30 PM"
+       },
+       "style": {
+        "fontSize": 46,
+        "fontWeight": 700,
+        "align": "center",
+        "valign": "middle",
+        "fontFamily": "var(--font-body)"
+       },
+       "animation": {
+        "in": "fade",
+        "loop": "none",
+        "out": "none",
+        "delayMs": 700,
+        "durationMs": 700,
+        "easing": "smooth"
+       },
+       "z": 5
+      }
+     ]
+    }
+   ]
+  }
+ },
+ {
+  "id": "hours",
+  "name": "Hours and Info",
+  "category": "Menu / Hours / Schedule",
+  "description": "Opening hours in a clean two-column list with a contact line.",
+  "deck": {
+   "theme": "clean",
+   "mode": "manual",
+   "aspect": "16:9",
+   "defaultDurationSec": 12,
+   "screens": [
+    {
+     "name": "Hours",
+     "durationSec": 12,
+     "background": {
+      "type": "color",
+      "value": ""
+     },
+     "elements": [
+      {
+       "type": "text",
+       "x": 160,
+       "y": 90,
+       "w": 1600,
+       "h": 170,
+       "rotation": 0,
+       "content": {
+        "text": "Hours"
+       },
+       "style": {
+        "fontSize": 130,
+        "fontWeight": 800,
+        "align": "left",
+        "valign": "middle"
+       },
+       "animation": {
+        "in": "slide-right",
+        "loop": "none",
+        "out": "none",
+        "delayMs": 0,
+        "durationMs": 700,
+        "easing": "smooth"
+       },
+       "z": 1
+      },
+      {
+       "type": "shape",
+       "x": 160,
+       "y": 280,
+       "w": 1600,
+       "h": 600,
+       "rotation": 0,
+       "content": {},
+       "style": {
+        "fill": "var(--card)",
+        "radius": 40
+       },
+       "animation": {
+        "in": "fade",
+        "loop": "none",
+        "out": "none",
+        "delayMs": 200,
+        "durationMs": 700,
+        "easing": "smooth"
+       },
+       "z": 2
+      },
+      {
+       "type": "text",
+       "x": 230,
+       "y": 310,
+       "w": 700,
+       "h": 540,
+       "rotation": 0,
+       "content": {
+        "text": "Monday\nTuesday\nWednesday\nThursday\nFriday\nWeekend"
+       },
+       "style": {
+        "fontSize": 52,
+        "fontWeight": 700,
+        "align": "left",
+        "valign": "top",
+        "fontFamily": "var(--font-body)",
+        "lineHeight": 1.6
+       },
+       "animation": {
+        "in": "fade",
+        "loop": "none",
+        "out": "none",
+        "delayMs": 400,
+        "durationMs": 700,
+        "easing": "smooth"
+       },
+       "z": 3
+      },
+      {
+       "type": "text",
+       "x": 980,
+       "y": 310,
+       "w": 700,
+       "h": 540,
+       "rotation": 0,
+       "content": {
+        "text": "9 AM – 5 PM\n9 AM – 5 PM\n9 AM – 7 PM\n9 AM – 5 PM\n9 AM – 3 PM\nClosed"
+       },
+       "style": {
+        "fontSize": 52,
+        "fontWeight": 500,
+        "align": "left",
+        "valign": "top",
+        "color": "var(--muted)",
+        "fontFamily": "var(--font-body)",
+        "lineHeight": 1.6
+       },
+       "animation": {
+        "in": "fade",
+        "loop": "none",
+        "out": "none",
+        "delayMs": 500,
+        "durationMs": 700,
+        "easing": "smooth"
+       },
+       "z": 4
+      },
+      {
+       "type": "text",
+       "x": 160,
+       "y": 910,
+       "w": 1600,
+       "h": 90,
+       "rotation": 0,
+       "content": {
+        "text": "123 Main Street  •  (555) 123-4567"
+       },
+       "style": {
+        "fontSize": 46,
+        "fontWeight": 600,
+        "align": "left",
+        "valign": "top",
+        "color": "var(--accent)",
+        "fontFamily": "var(--font-body)"
+       },
+       "animation": {
+        "in": "fade",
+        "loop": "none",
+        "out": "none",
+        "delayMs": 800,
+        "durationMs": 700,
+        "easing": "smooth"
+       },
+       "z": 5
+      }
+     ]
+    }
+   ]
+  }
+ },
+ {
+  "id": "weekly-schedule",
+  "name": "Weekly Schedule",
+  "category": "Menu / Hours / Schedule",
+  "description": "Day, event, and time in three aligned columns.",
+  "deck": {
+   "theme": "forest",
+   "mode": "manual",
+   "aspect": "16:9",
+   "defaultDurationSec": 12,
+   "screens": [
+    {
+     "name": "This week",
+     "durationSec": 12,
+     "background": {
+      "type": "color",
+      "value": ""
+     },
+     "elements": [
+      {
+       "type": "text",
+       "x": 140,
+       "y": 70,
+       "w": 1640,
+       "h": 160,
+       "rotation": 0,
+       "content": {
+        "text": "This Week"
+       },
+       "style": {
+        "fontSize": 124,
+        "fontWeight": 800,
+        "align": "left",
+        "valign": "top"
+       },
+       "animation": {
+        "in": "slide-right",
+        "loop": "none",
+        "out": "none",
+        "delayMs": 0,
+        "durationMs": 700,
+        "easing": "smooth"
+       },
+       "z": 1
+      },
+      {
+       "type": "shape",
+       "x": 140,
+       "y": 250,
+       "w": 1640,
+       "h": 680,
+       "rotation": 0,
+       "content": {},
+       "style": {
+        "fill": "var(--card)",
+        "radius": 44
+       },
+       "animation": {
+        "in": "fade",
+        "loop": "none",
+        "out": "none",
+        "delayMs": 200,
+        "durationMs": 700,
+        "easing": "smooth"
+       },
+       "z": 2
+      },
+      {
+       "type": "text",
+       "x": 200,
+       "y": 280,
+       "w": 380,
+       "h": 620,
+       "rotation": 0,
+       "content": {
+        "text": "Sunday\nMonday\nWednesday\nFriday\nSaturday"
+       },
+       "style": {
+        "fontSize": 58,
+        "fontWeight": 800,
+        "align": "left",
+        "valign": "top",
+        "color": "var(--accent)",
+        "fontFamily": "var(--font-body)",
+        "lineHeight": 1.75
+       },
+       "animation": {
+        "in": "fade",
+        "loop": "none",
+        "out": "none",
+        "delayMs": 400,
+        "durationMs": 700,
+        "easing": "smooth"
+       },
+       "z": 3
+      },
+      {
+       "type": "text",
+       "x": 600,
+       "y": 280,
+       "w": 800,
+       "h": 620,
+       "rotation": 0,
+       "content": {
+        "text": "Worship service\nStaff meeting\nYouth night\nGame night\nService project"
+       },
+       "style": {
+        "fontSize": 58,
+        "fontWeight": 600,
+        "align": "left",
+        "valign": "top",
+        "fontFamily": "var(--font-body)",
+        "lineHeight": 1.75
+       },
+       "animation": {
+        "in": "fade",
+        "loop": "none",
+        "out": "none",
+        "delayMs": 500,
+        "durationMs": 700,
+        "easing": "smooth"
+       },
+       "z": 4
+      },
+      {
+       "type": "text",
+       "x": 1400,
+       "y": 280,
+       "w": 340,
+       "h": 620,
+       "rotation": 0,
+       "content": {
+        "text": "10:00 AM\n9:00 AM\n6:30 PM\n7:00 PM\n9:00 AM"
+       },
+       "style": {
+        "fontSize": 58,
+        "fontWeight": 500,
+        "align": "right",
+        "valign": "top",
+        "color": "var(--muted)",
+        "fontFamily": "var(--font-body)",
+        "lineHeight": 1.75
+       },
+       "animation": {
+        "in": "fade",
+        "loop": "none",
+        "out": "none",
+        "delayMs": 600,
+        "durationMs": 700,
+        "easing": "smooth"
+       },
+       "z": 5
+      }
+     ]
+    }
+   ]
+  }
+ },
+ {
+  "id": "menu-board",
+  "name": "Menu Board",
+  "category": "Menu / Hours / Schedule",
+  "description": "Two-column menu with item names and aligned prices.",
+  "deck": {
+   "theme": "chalkboard",
+   "mode": "manual",
+   "aspect": "16:9",
+   "defaultDurationSec": 12,
+   "screens": [
+    {
+     "name": "Menu",
+     "durationSec": 12,
+     "background": {
+      "type": "color",
+      "value": ""
+     },
+     "elements": [
+      {
+       "type": "text",
+       "x": 120,
+       "y": 50,
+       "w": 1680,
+       "h": 170,
+       "rotation": 0,
+       "content": {
+        "text": "Menu"
+       },
+       "style": {
+        "fontSize": 150,
+        "fontWeight": 800,
+        "align": "center",
+        "valign": "middle"
+       },
+       "animation": {
+        "in": "slide-down",
+        "loop": "none",
+        "out": "none",
+        "delayMs": 0,
+        "durationMs": 700,
+        "easing": "smooth"
+       },
+       "z": 1
+      },
+      {
+       "type": "shape",
+       "x": 960,
+       "y": 250,
+       "w": 4,
+       "h": 640,
+       "rotation": 0,
+       "content": {},
+       "style": {
+        "fill": "var(--muted)",
+        "radius": 2,
+        "opacity": 0.5
+       },
+       "z": 2
+      },
+      {
+       "type": "text",
+       "x": 140,
+       "y": 250,
+       "w": 520,
+       "h": 70,
+       "rotation": 0,
+       "content": {
+        "text": "Drinks"
+       },
+       "style": {
+        "fontSize": 60,
+        "fontWeight": 800,
+        "align": "left",
+        "valign": "top",
+        "color": "var(--accent)",
+        "fontFamily": "var(--font-body)"
+       },
+       "z": 3
+      },
+      {
+       "type": "text",
+       "x": 140,
+       "y": 340,
+       "w": 600,
+       "h": 540,
+       "rotation": 0,
+       "content": {
+        "text": "Coffee\nHot chocolate\nLemonade\nWater"
+       },
+       "style": {
+        "fontSize": 54,
+        "fontWeight": 600,
+        "align": "left",
+        "valign": "top",
+        "fontFamily": "var(--font-body)",
+        "lineHeight": 1.8
+       },
+       "animation": {
+        "in": "fade",
+        "loop": "none",
+        "out": "none",
+        "delayMs": 300,
+        "durationMs": 700,
+        "easing": "smooth"
+       },
+       "z": 4
+      },
+      {
+       "type": "text",
+       "x": 740,
+       "y": 340,
+       "w": 180,
+       "h": 540,
+       "rotation": 0,
+       "content": {
+        "text": "$2\n$3\n$2\nFree"
+       },
+       "style": {
+        "fontSize": 54,
+        "fontWeight": 700,
+        "align": "right",
+        "valign": "top",
+        "color": "var(--accent)",
+        "fontFamily": "var(--font-body)",
+        "lineHeight": 1.8
+       },
+       "animation": {
+        "in": "fade",
+        "loop": "none",
+        "out": "none",
+        "delayMs": 400,
+        "durationMs": 700,
+        "easing": "smooth"
+       },
+       "z": 5
+      },
+      {
+       "type": "text",
+       "x": 1020,
+       "y": 250,
+       "w": 520,
+       "h": 70,
+       "rotation": 0,
+       "content": {
+        "text": "Snacks"
+       },
+       "style": {
+        "fontSize": 60,
+        "fontWeight": 800,
+        "align": "left",
+        "valign": "top",
+        "color": "var(--accent)",
+        "fontFamily": "var(--font-body)"
+       },
+       "z": 6
+      },
+      {
+       "type": "text",
+       "x": 1020,
+       "y": 340,
+       "w": 600,
+       "h": 540,
+       "rotation": 0,
+       "content": {
+        "text": "Pizza slice\nCookie\nPopcorn\nFruit cup"
+       },
+       "style": {
+        "fontSize": 54,
+        "fontWeight": 600,
+        "align": "left",
+        "valign": "top",
+        "fontFamily": "var(--font-body)",
+        "lineHeight": 1.8
+       },
+       "animation": {
+        "in": "fade",
+        "loop": "none",
+        "out": "none",
+        "delayMs": 500,
+        "durationMs": 700,
+        "easing": "smooth"
+       },
+       "z": 7
+      },
+      {
+       "type": "text",
+       "x": 1620,
+       "y": 340,
+       "w": 180,
+       "h": 540,
+       "rotation": 0,
+       "content": {
+        "text": "$3\n$1\n$1\n$2"
+       },
+       "style": {
+        "fontSize": 54,
+        "fontWeight": 700,
+        "align": "right",
+        "valign": "top",
+        "color": "var(--accent)",
+        "fontFamily": "var(--font-body)",
+        "lineHeight": 1.8
+       },
+       "animation": {
+        "in": "fade",
+        "loop": "none",
+        "out": "none",
+        "delayMs": 600,
+        "durationMs": 700,
+        "easing": "smooth"
+       },
+       "z": 8
+      }
+     ]
+    }
+   ]
+  }
+ }
+]

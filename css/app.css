@@ -171,3 +171,12 @@ a { color: inherit; }
 .add-sub { grid-column: 1 / -1; margin: 6px 0 0; font-size: 13px; text-transform: uppercase; letter-spacing: .06em; color: var(--ui-muted); }
 .field input[type="datetime-local"] { width: 100%; min-height: 36px; font: inherit; color: var(--ui-fg); background: var(--ui-bg); border: 1px solid var(--ui-line); border-radius: 8px; padding: 4px 8px; }
 .field:has(input[type="datetime-local"]) { flex-direction: column; align-items: stretch; gap: 2px; }
+
+/* Phase 7: template picker */
+.chips { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 20px; }
+.chip { min-height: 40px; padding: 0 16px; border-radius: 999px; border: 1px solid var(--ui-line); background: var(--ui-panel); color: var(--ui-fg); font: 600 15px inherit; cursor: pointer; }
+.chip[aria-pressed="true"] { background: var(--ui-primary); border-color: var(--ui-primary); color: #fff; }
+.card-desc { margin: 0 0 12px; color: var(--ui-muted); font-size: 14px; min-height: 2.8em; }
+.picker .card-meta { margin-bottom: 4px; }
+.picker .card-body { flex: 1; display: flex; flex-direction: column; }
+.picker .card-actions { margin-top: auto; }
