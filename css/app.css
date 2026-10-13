@@ -217,6 +217,11 @@ a { color: inherit; }
 .lib-links a, .lib-links .link { color: var(--ui-primary); text-decoration: none; font-size: 14px; background: none; border: 0; cursor: pointer; padding: 0; font-family: inherit; }
 .import-status { margin: -10px 0 16px; font-size: 14px; color: var(--ui-muted); }
 .import-status.error { color: #dc2626; }
+
+/* Phase 10: about/privacy */
+.about-body { max-width: 640px; }
+.about-body h2 { font-size: 18px; margin: 24px 0 6px; }
+.about-body p { color: var(--ui-fg); line-height: 1.6; }
 .library.drop-hover { outline: 3px dashed var(--ui-primary); outline-offset: -8px; border-radius: 16px; }
 .card-actions.card-actions + .card-actions { margin-top: 6px; }
 .card-body { gap: 2px; }

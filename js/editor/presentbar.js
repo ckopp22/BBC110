@@ -24,8 +24,10 @@ export function createPresentBar(root, deckId) {
   const dot = h('span', { className: 'present-dot' });
   const label = h('span', { className: 'present-label', textContent: 'Connecting…' });
   const prev = h('button', { type: 'button', className: 'btn icon small', textContent: '◀', title: 'Previous screen' });
+  prev.setAttribute('aria-label', 'Previous screen');
   const play = h('button', { type: 'button', className: 'btn small', hidden: true });
   const next = h('button', { type: 'button', className: 'btn icon small', textContent: '▶', title: 'Next screen' });
+  next.setAttribute('aria-label', 'Next screen');
   const black = h('button', { type: 'button', className: 'btn small', textContent: 'Black' });
   const tTimer = h('button', { type: 'button', className: 'btn small', hidden: true });
   const tReset = h('button', { type: 'button', className: 'btn small', hidden: true, textContent: 'Reset' });

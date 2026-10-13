@@ -27,6 +27,7 @@ export async function renderLibrary(root, actions) {
     <p class="lib-links">
       <a href="#/trash">Trash${trash.length ? ` (${trash.length})` : ''}</a>
       <button type="button" class="link" id="backupBtn">Back up my library</button>
+      <a href="#/about">About &amp; privacy</a>
     </p>`;
 
   wrap.querySelectorAll('button[data-new]').forEach((b) => {
