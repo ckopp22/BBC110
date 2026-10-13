@@ -1,5 +1,4 @@
-/* Keyframes library. Phase 2 only needs the screen transition; more arrive in Phase 6. */
-@keyframes bbc-fade-in { from { opacity: 0; } to { opacity: 1; } }
+/* CSS keyframes (ticker, alert banners). Element and screen animations live in js/animator.js (Web Animations API). */
 
 @keyframes bbc-marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
 @keyframes bbc-pulse { 0%, 100% { opacity: 1; } 50% { opacity: .55; } }
@@ -7,6 +6,5 @@
 .anim-pulse { animation: bbc-pulse 1.4s ease-in-out infinite; }
 .anim-flash { animation: bbc-flash 1s steps(1) infinite; }
 
-@media (prefers-reduced-motion: reduce) {
-  .stage * { animation: none !important; transition: none !important; }
-}
+/* Reduce motion: js/animator.js sets .reduce-motion on <html> from the OS preference and the in-app setting. */
+.reduce-motion .stage * { animation: none !important; transition: none !important; }

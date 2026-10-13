@@ -20,7 +20,7 @@ export function newElement(type, props = {}) {
     x: 0, y: 0, w: 400, h: 200, rotation: 0, z: 1,
     hidden: false, locked: false,
     style: {}, content: {},
-    animation: { in: 'none', loop: 'none', out: 'none', delayMs: 0, durationMs: 600 },
+    animation: { in: 'none', loop: 'none', out: 'none', delayMs: 0, durationMs: 600, easing: 'smooth' },
     ...props,
   };
 }
@@ -45,21 +45,23 @@ export function newDeck(name = 'Untitled', screens = [newScreen('Screen 1')]) {
   };
 }
 
+const anim = (inn, delayMs = 0, durationMs = 700) => ({ in: inn, loop: 'none', out: 'none', delayMs, durationMs, easing: 'smooth' });
+
 export function sampleDeck() {
   const welcome = newScreen('Welcome', {
     durationSec: 12,
     background: { type: 'gradient', value: 'linear-gradient(135deg,#0b1020 0%,#1e3a8a 100%)', overlay: null },
     elements: [
-      newElement('shape', { x: 160, y: 420, w: 220, h: 10, style: { fill: 'var(--accent)', radius: 5 } }),
+      newElement('shape', { x: 160, y: 420, w: 220, h: 10, style: { fill: 'var(--accent)', radius: 5 }, animation: anim('slide-right', 400) }),
       newElement('text', {
         x: 160, y: 200, w: 1600, h: 200, z: 2,
         content: { text: 'Welcome to Youth Night' },
-        style: { fontSize: 140, fontWeight: 800, valign: 'bottom' },
+        style: { fontSize: 140, fontWeight: 800, valign: 'bottom' }, animation: anim('slide-up', 100, 800),
       }),
       newElement('text', {
         x: 160, y: 470, w: 1400, h: 260, z: 2,
         content: { text: 'Wednesdays at 6:30 PM\nGrab a snack and find a seat!' },
-        style: { fontSize: 64, fontWeight: 500, color: 'var(--muted)', lineHeight: 1.3 },
+        style: { fontSize: 64, fontWeight: 500, color: 'var(--muted)', lineHeight: 1.3 }, animation: anim('fade', 600, 900),
       }),
     ],
   });
@@ -70,18 +72,19 @@ export function sampleDeck() {
       newElement('text', {
         x: 160, y: 120, w: 1600, h: 140, z: 2,
         content: { text: 'This Week' },
-        style: { fontSize: 110, fontWeight: 800, color: 'var(--accent)' },
+        style: { fontSize: 110, fontWeight: 800, color: 'var(--accent)' }, animation: anim('slide-down'),
       }),
-      newElement('shape', { x: 160, y: 300, w: 1600, h: 560, style: { fill: 'rgba(255,255,255,.07)', radius: 32 } }),
+      newElement('shape', { x: 160, y: 300, w: 1600, h: 560, style: { fill: 'rgba(255,255,255,.07)', radius: 32 }, animation: anim('fade', 200) }),
       newElement('text', {
         x: 220, y: 340, w: 1480, h: 480, z: 3,
         content: { text: '• Game night this Friday\n• Bring a friend, win a prize\n• Retreat sign-ups close Sunday' },
-        style: { fontSize: 72, fontWeight: 600, lineHeight: 1.5 },
+        style: { fontSize: 72, fontWeight: 600, lineHeight: 1.5 }, animation: anim('fade', 500, 900),
       }),
     ],
   });
   const deck = newDeck('Sample: Youth Night', [welcome, news]);
   deck.mode = 'loop';
+  deck.transition = { type: 'push', durationMs: 700 };
   return deck;
 }
 

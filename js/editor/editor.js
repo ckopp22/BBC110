@@ -4,6 +4,7 @@ import * as store from '../store.js';
 import { createCanvasEditor } from './canvas.js';
 import { createInspector } from './inspector.js';
 import { createPanels } from './panels.js';
+import { entranceEndMs, reduceMotion } from '../animator.js';
 
 let cleanup = null;
 const mobile = matchMedia('(max-width: 900px)');
@@ -47,7 +48,8 @@ export async function renderEditor(root, actions, id) {
         <div id="canvas"></div>
         <div class="canvas-bar">
           <label class="check"><input type="checkbox" id="snap" checked> Snap</label>
-          <span class="hint">Drag to move. Shift-drag a corner keeps proportions.</span>
+          <button class="btn small" id="previewBtn" type="button">\u25B6 Preview</button>
+          <span class="hint" id="barHint">Drag to move. Shift-drag a corner keeps proportions.</span>
         </div>
       </div>
       <aside class="panel right">
@@ -63,7 +65,7 @@ export async function renderEditor(root, actions, id) {
 
   const stage = createStage($('#canvas'), deck);
   const canvas = createCanvasEditor($('#canvas'), stage);
-  const inspector = createInspector($('#inspector'), $('#layers'));
+  const inspector = createInspector($('#inspector'), $('#layers'), { preview: startPreview, motion: updateMotionNote });
   const panels = createPanels($('#addRoot'), $('#screensRoot'));
   canvas.onEdit = (el) => { setTab('edit'); if (el.type === 'text') inspector.focusText(); };
   $('#snap').onchange = (e) => { canvas.snap = e.target.checked; };
@@ -74,6 +76,49 @@ export async function renderEditor(root, actions, id) {
   }
   root.querySelectorAll('.tabs button').forEach((b) => { b.onclick = () => setTab(b.dataset.go); });
   setTab('edit');
+
+  // ---- animation preview: transition in, entrances/loops, hold, exit, then back to editing ----
+  let previewing = false, previewTimers = [], previewAt = null;
+  const previewBtn = $('#previewBtn');
+  function updateMotionNote() {
+    $('#barHint').textContent = reduceMotion() ? 'Reduce motion is on, so animations and transitions are skipped.' : 'Drag to move. Shift-drag a corner keeps proportions.';
+  }
+  function stopPreview() {
+    if (!previewing) return;
+    previewing = false;
+    previewTimers.forEach(clearTimeout);
+    previewTimers = [];
+    canvas.setHidden(false);
+    previewBtn.textContent = '\u25B6 Preview';
+    schedule();
+  }
+  function startPreview() {
+    if (previewing) { stopPreview(); return; }
+    const st = store.getState();
+    const i = st.screenIndex, dk = st.deck, sc = dk.screens[i];
+    previewing = true;
+    previewAt = { rev: st.rev, sel: st.selectedId, screen: st.screenIndex };
+    previewBtn.textContent = '\u25A0 Stop';
+    canvas.setHidden(true);
+    stage.setDeck(dk);
+    updateMotionNote();
+    const later = (fn, ms) => previewTimers.push(setTimeout(fn, ms));
+    const type = (sc.transition && sc.transition.type) || (dk.transition && dk.transition.type) || 'fade';
+    const tms = type === 'none' ? 0 : (dk.transition && dk.transition.durationMs) ?? 600;
+    let t = 0;
+    if (i > 0) {
+      stage.setScreen(i - 1, { animate: false });
+      t = 350;
+      later(() => stage.setScreen(i, { animate: true, transitionMs: tms, type, dir: 1 }), t);
+      t += tms;
+    } else {
+      stage.setScreen(i, { animate: true });
+    }
+    t += Math.max(entranceEndMs(sc), 1500) + 1500;
+    later(() => { const ms = stage.playExit(); later(stopPreview, ms + 400); }, t);
+  }
+  previewBtn.onclick = startPreview;
+  $('#canvas').addEventListener('pointerdown', () => { if (previewing) stopPreview(); });
 
   // ---- render loop (batched per frame) ----
   let raf = 0, lastSelected = null;
@@ -94,14 +139,24 @@ export async function renderEditor(root, actions, id) {
       if (st.selectedId && mobile.matches && editor.dataset.tab !== 'edit') setTab('edit');
     }
   }
-  const schedule = () => { if (!raf) raf = requestAnimationFrame(draw); };
+  const schedule = () => {
+    if (previewing) {
+      // Edits or selection changes end the preview; the autosave notification (no change) must not.
+      const st = store.getState();
+      if (st.rev !== previewAt.rev || st.selectedId !== previewAt.sel || st.screenIndex !== previewAt.screen) stopPreview();
+      return;
+    }
+    if (!raf) raf = requestAnimationFrame(draw);
+  };
   const unsubscribe = store.subscribe(schedule);
   draw();
+  updateMotionNote();
 
   // ---- keyboard shortcuts ----
   function onKey(e) {
     const mod = e.metaKey || e.ctrlKey;
     const k = e.key.toLowerCase();
+    if (k === 'escape' && previewing) { stopPreview(); return; }
     if (mod && k === 's') { e.preventDefault(); store.flush(); return; }
     if (e.target.closest && e.target.closest('input, textarea, select')) return;
     const sel = store.getSelected();
@@ -122,6 +177,7 @@ export async function renderEditor(root, actions, id) {
   cleanup = () => {
     unsubscribe();
     cancelAnimationFrame(raf);
+    previewTimers.forEach(clearTimeout);
     document.removeEventListener('keydown', onKey);
     panels.destroy();
     canvas.destroy();

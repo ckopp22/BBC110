@@ -3,6 +3,7 @@ import { renderLibrary } from './library.js';
 import { renderEditor } from './editor/editor.js';
 import { initPWA } from './pwa.js';
 import { requestPersistence } from './db.js';
+import { initMotion } from './animator.js';
 import * as store from './store.js';
 
 const app = document.getElementById('app');
@@ -24,4 +25,5 @@ async function route() {
 addEventListener('hashchange', route);
 route();
 initPWA();
+initMotion();
 requestPersistence();

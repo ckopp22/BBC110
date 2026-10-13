@@ -6,7 +6,7 @@
   font-family: var(--font-body, system-ui, sans-serif);
   -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility;
 }
-.screen { position: absolute; inset: 0; overflow: hidden; }
+.screen { position: absolute; inset: 0; overflow: hidden; perspective: 1600px; }
 .screen-bg, .screen-overlay { position: absolute; inset: 0; }
 .screen-bg { background: var(--bg); background-position: center; }
 .el { position: absolute; box-sizing: border-box; transform-origin: 50% 50%; }

@@ -193,6 +193,7 @@ export function createCanvasEditor(host, stage) {
   overlay.addEventListener('pointercancel', end);
   overlay.addEventListener('dblclick', () => { const s = store.getSelected(); if (s && api.onEdit) api.onEdit(s); });
 
+  api.setHidden = (hidden) => { overlay.style.display = hidden ? 'none' : ''; };
   api.destroy = () => overlay.remove();
   return api;
 }

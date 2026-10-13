@@ -12,21 +12,25 @@ import * as ticker from './elements/ticker.js';
 import * as qr from './elements/qr.js';
 import * as scoreboard from './elements/scoreboard.js';
 import { subscribe, addController } from './live.js';
+import { animateElement, playExit as playExitAnim, runTransition, reduceMotion } from './animator.js';
+import { animatedBackground } from './backgrounds.js';
 
 const ELEMENTS = { text, shape, image, clock, timer, banner, ticker, qr, scoreboard };
 
 export const canvasSize = (aspect) => ASPECTS[aspect] || ASPECTS['16:9'];
 
-function renderBackground(bg) {
+function renderBackground(bg, ctx = {}) {
   const frag = document.createDocumentFragment();
-  const layer = document.createElement('div');
+  const layer = bg && bg.type === 'animated'
+    ? animatedBackground(bg, ctx.seed || '', !!ctx.animate && !reduceMotion(), ctx.size || [1920, 1080])
+    : document.createElement('div');
   layer.className = 'screen-bg';
   if (bg && bg.type === 'image' && bg.value) {
     layer.style.backgroundImage = `url("${bg.value}")`;
     layer.style.backgroundSize = bg.fit === 'contain' ? 'contain' : 'cover';
     layer.style.backgroundRepeat = 'no-repeat';
     if (bg.blur > 0) { layer.style.filter = `blur(${bg.blur}px)`; layer.style.transform = 'scale(1.1)'; }
-  } else if (bg && bg.value) {
+  } else if (bg && bg.value && bg.type !== 'animated') {
     layer.style.background = bg.value; // color or gradient
   }
   frag.append(layer);
@@ -40,12 +44,13 @@ function renderBackground(bg) {
   return frag;
 }
 
-// ctx: { mode, live, persist, deckId, cleanups }. Live elements return { update, start, stop, controller }.
+// ctx: { mode, live, animate, persist, deckId, cleanups, order, stagger }. Live elements return { update, start, stop, controller }.
 export function renderElement(el, ctx = { live: false, cleanups: [] }) {
   const mod = ELEMENTS[el.type];
   const node = document.createElement('div');
   node.className = `el el-${el.type}`;
   node.dataset.id = el.id;
+  node._el = el; // read by playExit
   node.style.left = el.x + 'px';
   node.style.top = el.y + 'px';
   node.style.width = el.w + 'px';
@@ -62,6 +67,7 @@ export function renderElement(el, ctx = { live: false, cleanups: [] }) {
       if (r.controller) ctx.cleanups.push(addController(r.controller));
     }
   }
+  if (ctx.animate && ctx.live) ctx.cleanups.push(animateElement(node, el, ctx));
   return node;
 }
 
@@ -70,13 +76,13 @@ export function renderScreen(screen, deck, base = { live: false }) {
   node.className = 'screen';
   if (screen.theme) applyTheme(node, themeVars(screen.theme, deck));
   node.dataset.id = screen.id;
-  node.append(renderBackground(screen.background));
   const cleanups = [];
-  const ctx = { ...base, deckId: deck && deck.id, persist: base.mode === 'show', cleanups };
+  const ctx = { ...base, deckId: deck && deck.id, persist: base.mode === 'show', cleanups, stagger: screen.stagger || 0 };
+  node.append(renderBackground(screen.background, { ...ctx, seed: screen.id, size: canvasSize(deck && deck.aspect) }));
   [...screen.elements]
     .filter((el) => !el.hidden)
     .sort((a, b) => a.z - b.z)
-    .forEach((el) => node.append(renderElement(el, ctx)));
+    .forEach((el, order) => node.append(renderElement(el, { ...ctx, order })));
   node._cleanup = () => cleanups.splice(0).forEach((fn) => fn());
   return node;
 }
@@ -87,7 +93,7 @@ export function destroyScreen(node) { if (node && node._cleanup) node._cleanup()
 // Mounts a scaled logical canvas inside `host` and keeps it fitted as the host resizes.
 // fit: 'contain' (letterbox/pillarbox) or 'cover' (fill/crop).
 // mode: 'edit' | 'show' (show persists timers and scores). live: false renders a static snapshot (thumbnails).
-export function createStage(host, initialDeck, { fit = 'contain', mode = 'edit', live = true } = {}) {
+export function createStage(host, initialDeck, { fit = 'contain', mode = 'edit', live = true, animate = mode === 'show' } = {}) {
   let deck = initialDeck;
   let onLayout = null;
   const metrics = { s: 1, ox: 0, oy: 0, W: 1920, H: 1080 };
@@ -121,18 +127,22 @@ export function createStage(host, initialDeck, { fit = 'contain', mode = 'edit',
   ro.observe(host);
   size();
 
-  // Shows screen `i`. With transitionMs > 0 the new screen fades in over the old one.
-  function setScreen(i, { transitionMs = 0 } = {}) {
+  // Shows screen `i`. With a previous screen and transitionMs > 0 the new screen transitions in over the old one
+  // (type: fade | dissolve | slide | push | zoom | none; dir: 1 forward, -1 backward).
+  // opts.animate overrides whether element entrances/loops and animated backgrounds play.
+  function setScreen(i, { transitionMs = 0, type = 'fade', dir = 1, animate: anim = animate } = {}) {
     const screen = deck.screens[i];
     if (!screen) return;
     index = i;
-    const next = renderScreen(screen, deck, { mode, live });
+    const next = renderScreen(screen, deck, { mode, live, animate: anim });
     const prev = current;
     current = next;
-    if (prev && transitionMs > 0) {
-      next.style.animation = `bbc-fade-in ${transitionMs}ms ease both`;
+    if (prev && transitionMs > 0 && type !== 'none' && !reduceMotion()) {
       stage.append(next);
-      setTimeout(() => { prev.remove(); destroyScreen(prev); }, transitionMs + 50);
+      let removed = false;
+      const done = () => { if (removed) return; removed = true; prev.remove(); destroyScreen(prev); };
+      runTransition(next, prev, type, transitionMs, dir).then(done);
+      setTimeout(done, transitionMs + 150); // safety net if the animation clock is paused (hidden tab)
     } else {
       stage.replaceChildren(next);
       destroyScreen(prev);
@@ -146,6 +156,7 @@ export function createStage(host, initialDeck, { fit = 'contain', mode = 'edit',
     setDeck(d) { deck = d; size(); },
     get index() { return index; },
     setScreen,
+    playExit() { return playExitAnim(current); },
     rerender() { size(); if (index >= 0) setScreen(index); },
     destroy() { ro.disconnect(); destroyScreen(current); stage.remove(); },
   };

@@ -3,6 +3,7 @@ import { getDeck } from '../db.js';
 import { createStage, preloadDeck } from '../renderer.js';
 import { sampleDeck } from '../model.js';
 import { getControllers } from '../live.js';
+import { exitMs, initMotion } from '../animator.js';
 
 const $ = (id) => document.getElementById(id);
 const body = document.body;
@@ -24,19 +25,21 @@ async function start() {
   const deck = await loadDeck();
   if (!deck || !deck.screens || !deck.screens.length) return fail('This screen could not be found.');
 
+  initMotion();
   document.title = `${deck.name} – BBC110 Show`;
   await preloadDeck(deck);
   const stage = createStage($('host'), deck, { mode: 'show' });
   const count = deck.screens.length;
   const resumeKey = `bbc110.resume.${deck.id}`;
   const mode = deck.mode || 'manual';
-  const transitionMs = (deck.transition && deck.transition.type !== 'none') ? (deck.transition.durationMs || 0) : 0;
 
   let index = 0;
   let paused = mode === 'manual';
   let timer = null;
   let deadline = 0;
   let remaining = 0;
+  let exitTimer = null; // set while exit animations play before the next screen
+  let pending = 0;
 
   try { const saved = parseInt(localStorage.getItem(resumeKey), 10); if (saved >= 0 && saved < count) index = saved; } catch { /* storage blocked */ }
 
@@ -55,19 +58,39 @@ async function start() {
     timer = setTimeout(() => go(index + 1), ms);
   }
 
+  // Moves to screen i. If the current screen has exit animations they play first (and a second call just retargets).
   function go(i) {
     if (i >= count) i = mode === 'loop' ? 0 : count - 1;
     if (i < 0) i = mode === 'loop' ? count - 1 : 0;
+    if (exitTimer) { pending = i; return; }
+    clearTimeout(timer);
+    timer = null;
+    const ms = stage.index >= 0 && i !== index ? stage.playExit() : 0;
+    if (ms > 0) {
+      pending = i;
+      exitTimer = setTimeout(() => { exitTimer = null; commit(pending); }, ms);
+    } else {
+      commit(i);
+    }
+  }
+
+  function commit(i) {
     const changed = i !== index || stage.index < 0;
+    let dir = i >= index ? 1 : -1;
+    if (mode === 'loop' && index === count - 1 && i === 0) dir = 1;
     index = i;
-    if (changed) stage.setScreen(index, { transitionMs: stage.index < 0 ? 0 : transitionMs });
+    const sc = deck.screens[i];
+    const type = (sc.transition && sc.transition.type) || (deck.transition && deck.transition.type) || 'fade';
+    const ms = type === 'none' ? 0 : (deck.transition && deck.transition.durationMs) ?? 600;
+    if (changed) stage.setScreen(index, { transitionMs: stage.index < 0 ? 0 : ms, type, dir });
     try { localStorage.setItem(resumeKey, String(index)); } catch { /* storage blocked */ }
     $('count').textContent = `${index + 1} / ${count}`;
     jump.value = index;
-    schedule(durationMs(index));
+    // Start the exit animation early enough that the screen still lasts its full duration.
+    schedule(Math.max(0, durationMs(index) - exitMs(sc)));
     refreshLive();
-    // The old screen's timers are torn down after the fade, so re-check which controls apply.
-    if (changed && transitionMs) setTimeout(refreshLive, transitionMs + 100);
+    // The old screen's timers are torn down after the transition, so re-check which controls apply.
+    if (changed && ms) setTimeout(refreshLive, ms + 200);
   }
 
   // Timer and scoreboard controls only appear when the current screen has them.

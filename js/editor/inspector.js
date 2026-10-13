@@ -5,6 +5,8 @@ import { colorField } from './colorpicker.js';
 import { THEMES, resolveTheme } from '../themes.js';
 import { FONT_GROUPS, fontStack } from '../fonts.js';
 import { ASPECTS } from '../model.js';
+import { ENTRANCES, LOOPS, EXITS, TRANSITIONS, EASINGS, getMotionSetting, setMotionSetting } from '../animator.js';
+import { BACKGROUND_KINDS } from '../backgrounds.js';
 
 const h = (tag, props = {}, ...kids) => {
   const n = Object.assign(document.createElement(tag), props);
@@ -12,7 +14,7 @@ const h = (tag, props = {}, ...kids) => {
   return n;
 };
 
-const bgMode = (bg) => (bg.type === 'image' && bg.value ? 'image' : bg.type === 'gradient' ? 'gradient' : bg.value ? 'solid' : 'theme');
+const bgMode = (bg) => (bg.type === 'animated' ? 'animated' : bg.type === 'image' && bg.value ? 'image' : bg.type === 'gradient' ? 'gradient' : bg.value ? 'solid' : 'theme');
 const gradientCss = (g) => (g.kind === 'radial' ? `radial-gradient(circle at center, ${g.c1}, ${g.c2})` : `linear-gradient(${g.angle}deg, ${g.c1}, ${g.c2})`);
 
 // Style effect defaults (text). Missing keys fall back to these.
@@ -31,7 +33,7 @@ const TIME_ZONES = [['', 'Device time zone'], ['UTC', 'UTC'], ['America/New_York
 const WEIGHTS = [[400, 'Regular'], [500, 'Medium'], [600, 'Semibold'], [700, 'Bold'], [800, 'Extra bold']];
 const LAYER_NAMES = { clock: 'Clock', timer: 'Timer', ticker: 'Ticker', qr: 'QR code', scoreboard: 'Scoreboard' };
 
-export function createInspector(root, layersRoot) {
+export function createInspector(root, layersRoot, hooks = {}) {
   let controls = [];
   let lastKey = '';
   let textArea = null;
@@ -132,6 +134,15 @@ export function createInspector(root, layersRoot) {
     select(s, 'Theme', opts, () => cur().theme || '', (v) => store.setScreenProps({ theme: v }));
     s.append(h('p', { className: 'hint', textContent: 'Tap an element on the canvas to edit it, or add one from the Add tab.' }));
 
+    const an = group('Transitions and motion');
+    select(an, 'Screen transition', TRANSITIONS, () => (deck().transition && deck().transition.type) || 'fade', (v) => store.updateDeck((d) => { d.transition = { ...d.transition, type: v }; }));
+    num(an, 'Duration (ms)', () => (deck().transition && deck().transition.durationMs) ?? 600, (v) => store.updateDeck((d) => { d.transition = { ...d.transition, durationMs: Math.round(v) }; }, 'trans-ms'), { min: 100, max: 3000, step: 50 });
+    select(an, 'This screen', [['', 'Same as deck'], ...TRANSITIONS], () => (cur().transition && cur().transition.type) || '', (v) => store.setScreenProps({ transition: v ? { type: v } : null }));
+    num(an, 'Stagger (ms)', () => cur().stagger || 0, (v) => store.setScreenProps({ stagger: Math.max(0, Math.round(v)) }, 'stagger'), { min: 0, max: 2000, step: 50 });
+    select(an, 'Reduce motion', [['system', 'Follow device'], ['on', 'Always'], ['off', 'Never']], getMotionSetting, (v) => { setMotionSetting(v); if (hooks.motion) hooks.motion(); });
+    button(an, '\u25B6 Preview screen', () => hooks.preview && hooks.preview());
+    an.append(h('p', { className: 'hint', textContent: 'Stagger adds a delay to each element\u2019s entrance, in stacking order.' }));
+
     buildBackground();
   }
 
@@ -143,10 +154,11 @@ export function createInspector(root, layersRoot) {
     const setGrad = (p, key) => { const gr = { ...grad(), ...p }; setBg({ gradient: gr, value: gradientCss(gr) }, key); };
     const ov = () => bg().overlay || { color: '#000000', opacity: 0 };
 
-    const typeSel = select(g, 'Type', [['theme', 'Theme'], ['solid', 'Solid color'], ['gradient', 'Gradient'], ['image', 'Image']], () => bgMode(bg()), async (v) => {
+    const typeSel = select(g, 'Type', [['theme', 'Theme'], ['solid', 'Solid color'], ['gradient', 'Gradient'], ['image', 'Image'], ['animated', 'Animated']], () => bgMode(bg()), async (v) => {
       if (v === 'theme') setBg({ type: 'color', value: '' });
       else if (v === 'solid') setBg({ type: 'color', value: bg().type === 'color' && bg().value ? bg().value : 'var(--bg)' });
       else if (v === 'gradient') setBg({ type: 'gradient', gradient: grad(), value: gradientCss(grad()) });
+      else if (v === 'animated') setBg({ type: 'animated', value: '', kind: bg().kind || 'aurora' });
       else {
         const img = await pickImage();
         if (img) setBg({ type: 'image', value: img.src, fit: 'cover', blur: 0 });
@@ -161,6 +173,14 @@ export function createInspector(root, layersRoot) {
       num(g, 'Angle', () => grad().angle, (v) => setGrad({ angle: Math.round(v) }, 'bg-angle'), { min: 0, max: 360 });
       color(g, 'Color 1', () => grad().c1, (v) => setGrad({ c1: v }, 'bg-c1'), '#0b1020');
       color(g, 'Color 2', () => grad().c2, (v) => setGrad({ c2: v }, 'bg-c2'), '#1e3a8a');
+    }
+    if (mode === 'animated') {
+      select(g, 'Style', BACKGROUND_KINDS, () => bg().kind || 'aurora', (v) => setBg({ kind: v }));
+      color(g, 'Base color', () => bg().base, (v) => setBg({ base: v }, 'bg-base'), '#0b1020');
+      color(g, 'Color 1', () => bg().accent, (v) => setBg({ accent: v }, 'bg-a1'), '#facc15');
+      color(g, 'Color 2', () => bg().accent2, (v) => setBg({ accent2: v }, 'bg-a2'), '#94a3b8');
+      select(g, 'Speed', [['slow', 'Slow'], ['normal', 'Normal'], ['fast', 'Fast']], () => bg().speed || 'normal', (v) => setBg({ speed: v }));
+      g.append(h('p', { className: 'hint', textContent: 'Motion plays in Show mode and in Preview.' }));
     }
     if (mode === 'image') {
       button(g, 'Replace image', async () => { const img = await pickImage(); if (img) setBg({ value: img.src }); });
@@ -371,6 +391,17 @@ export function createInspector(root, layersRoot) {
       num(t, 'Corner radius', () => g().style.radius ?? 28, sty('radius'), { min: 0, max: 200 });
       t.append(h('p', { className: 'hint', textContent: 'In Show mode: keys 1–6 add a point, Shift+1–6 subtract, R resets. Tap the +/− buttons on a touch screen.' }));
     }
+
+    const an = group('Animation');
+    const A = () => g().animation || {};
+    const setA = (k) => (v) => upd({ animation: { [k]: v } }, `an-${k}`);
+    select(an, 'Entrance', el.type === 'text' ? ENTRANCES : ENTRANCES.filter(([v]) => v !== 'typewriter'), () => A().in || 'none', setA('in'));
+    select(an, 'Loop', LOOPS, () => A().loop || 'none', setA('loop'));
+    select(an, 'Exit', EXITS, () => A().out || 'none', setA('out'));
+    num(an, 'Duration (ms)', () => A().durationMs ?? 600, (v) => setA('durationMs')(Math.round(v)), { min: 50, max: 10000, step: 50 });
+    num(an, 'Delay (ms)', () => A().delayMs || 0, (v) => setA('delayMs')(Math.max(0, Math.round(v))), { min: 0, max: 20000, step: 50 });
+    select(an, 'Easing', EASINGS, () => A().easing || 'smooth', setA('easing'));
+    button(an, '\u25B6 Preview animation', () => hooks.preview && hooks.preview());
 
     const p = group('Position and size');
     const grid = h('div', { className: 'grid2' });
