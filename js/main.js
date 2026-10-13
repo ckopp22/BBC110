@@ -11,6 +11,7 @@ const actions = document.getElementById('topbarActions');
 async function route() {
   await store.flush();
   const m = location.hash.match(/^#\/edit\/(.+)$/);
+  document.body.classList.toggle('in-editor', !!m);
   try {
     if (m) await renderEditor(app, actions, decodeURIComponent(m[1]));
     else await renderLibrary(app, actions);

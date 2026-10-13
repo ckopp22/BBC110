@@ -56,7 +56,10 @@ export function renderScreen(screen) {
 
 // Mounts a scaled logical canvas inside `host` and keeps it fitted as the host resizes.
 // fit: 'contain' (letterbox/pillarbox) or 'cover' (fill/crop).
-export function createStage(host, deck, { fit = 'contain' } = {}) {
+export function createStage(host, initialDeck, { fit = 'contain' } = {}) {
+  let deck = initialDeck;
+  let onLayout = null;
+  const metrics = { s: 1, ox: 0, oy: 0, W: 1920, H: 1080 };
   host.classList.add('stage-host');
   const stage = document.createElement('div');
   stage.className = `stage theme-${deck.theme}`;
@@ -70,7 +73,9 @@ export function createStage(host, deck, { fit = 'contain' } = {}) {
     const hw = host.clientWidth, hh = host.clientHeight;
     if (!hw || !hh) return;
     const s = (fit === 'cover' ? Math.max : Math.min)(hw / W, hh / H);
-    stage.style.transform = `translate(${(hw - W * s) / 2}px, ${(hh - H * s) / 2}px) scale(${s})`;
+    metrics.s = s; metrics.ox = (hw - W * s) / 2; metrics.oy = (hh - H * s) / 2; metrics.W = W; metrics.H = H;
+    stage.style.transform = `translate(${metrics.ox}px, ${metrics.oy}px) scale(${s})`;
+    if (onLayout) onLayout();
   }
 
   function size() {
@@ -104,6 +109,9 @@ export function createStage(host, deck, { fit = 'contain' } = {}) {
 
   return {
     stage,
+    metrics,
+    set onLayout(fn) { onLayout = fn; },
+    setDeck(d) { deck = d; },
     get index() { return index; },
     setScreen,
     rerender() { size(); if (index >= 0) setScreen(index); },
